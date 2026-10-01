@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOQ Match — B2B Group Sourcing Platform & Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <!-- ===================================================================== -->
+  <div id="toast-notification" class="hidden fixed top-20 right-6 z-50 bg-slate-900 border border-emerald-500/80 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 transition-all duration-300">
+    <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    </div>
+    <span id="toast-message" class="text-xs font-semibold">Notification</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- 1. HEADER & TOP NAVIGATION -->
+  <!-- ===================================================================== -->
+  <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex items-center gap-4">
+          <a href="/" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors py-1 px-2.5 rounded-md hover:bg-slate-900">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span class="hidden sm:inline">Landing Page</span>
+          </a>
+
+          <div class="h-5 w-px bg-slate-800"></div>
+
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display font-bold text-sm tracking-tight text-white flex items-center gap-1">
+                MOQ Match
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              </span>
+              <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">Apparel Demand Syndicate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          
+          <!-- 2. Global Currency Exchange Switcher (USD / EUR / GBP / INR) -->
+          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <select id="currency-select" onchange="handleCurrencyChange(this.value)" class="bg-transparent text-xs font-mono font-bold text-emerald-400 focus:outline-none cursor-pointer">
+              <option value="USD" class="bg-slate-900 text-white">USD ($)</option>
+              <option value="EUR" class="bg-slate-900 text-white">EUR (€)</option>
+              <option value="GBP" class="bg-slate-900 text-white">GBP (£)</option>
+              <option value="INR" class="bg-slate-900 text-white">INR (₹)</option>
+            </select>
+          </div>
+
+          <!-- Notification Bell -->
+          <button onclick="toggleNotifications(true)" class="relative p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span id="unread-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-bold flex items-center justify-center font-mono">2</span>
+          </button>
+
+          <!-- User Authentication Header Status -->
+          <div id="auth-header-container" class="flex items-center gap-2">
+            <!-- Will be dynamically populated: Velvet & Vine (Verified Buyer) [Log Out] or Log In button -->
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN DASHBOARD CONTENT -->
+  <!-- ===================================================================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+    
+    <!-- Welcome Bar -->
+    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/40 rounded-2xl border border-slate-800 p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-950/90 text-emerald-400 text-xs font-semibold border border-emerald-800">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Verified Boutique Label
+          </span>
+          <span class="text-xs text-slate-400 font-mono">Member ID: #VV-84920</span>
+        </div>
+        <h1 class="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight" id="welcome-header-title">
+          Welcome back, Velvet & Vine (Verified Boutique Label)
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-xl">
+          Your seasonal collection demand is pooled with vetted peers. Milestone Escrow is holding <strong id="welcome-escrow-amount">$2,900.00</strong> with zero open-market overstock.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="#calculator-section" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 flex items-center gap-1.5">
+          <span>Jump to ROI Calculator</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Top 4 Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card 1 -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Active Pools</span>
+        <div class="text-3xl font-bold font-mono text-white">2</div>
+        <p class="text-[11px] text-slate-400">Pool #402 (Linen) &amp; Pool #419 (TENCEL)</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Total Capital Saved</span>
+        <div id="stat-total-saved" class="text-3xl font-bold font-mono text-emerald-400">$12,000</div>
+        <p class="text-[11px] text-slate-400">Compared to small-batch jobber markup</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Unsold Inventory Risk Reduction</span>
+        <div class="text-3xl font-bold font-mono text-indigo-400">80%</div>
+        <p class="text-[11px] text-slate-400">Purchasing exact planned run</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Pending Match Status</span>
+        <div id="stat-pending-status" class="text-xl font-bold font-mono text-amber-300 truncate">Pool #402 (70% Complete)</div>
+        <p id="stat-pending-desc" class="text-[11px] text-slate-400">300 units remaining · 4 days left</p>
+      </div>
+
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- DYNAMIC POOL #402 CARD (Real-time escrow pledge execution) -->
+    <!-- ===================================================================== -->
+    <section class="space-y-6">
+      
+      <div id="pool-402-card" class="bg-slate-950 rounded-2xl border-2 border-emerald-500/80 shadow-2xl p-6 sm:p-8 space-y-6 relative overflow-hidden">
+        
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span class="font-mono text-xs font-bold bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-md border border-emerald-500/40">
+                Pool #402
+              </span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 text-xs font-bold shadow-sm">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                92% Compatibility Match
+              </span>
+              <span class="text-xs text-slate-400 font-mono">Color Code: #FN-289</span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white pt-1">
+              Fabric: 200 GSM Organic Linen | Color: French Navy Dye
+            </h3>
+            <p class="text-xs text-slate-400">
+              Supplier: <strong class="text-slate-200">Apex Textile Mills</strong> (ISO 9001 Certified · Guimarães, Portugal)
+            </p>
+          </div>
+
+          <div class="lg:text-right shrink-0 bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <span class="text-[11px] text-slate-400">Target Deadline</span>
+            <div class="text-sm font-bold font-mono text-white mt-0.5">Closes in 4 Days (Oct 4)</div>
+            <span id="pool-402-wholesale-display" class="text-[11px] text-emerald-400 font-mono">$14.50/yard wholesale</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar: smoothly animated -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-semibold text-white">Consortium Demand Progress:</span>
+            <span id="pool-progress-text" class="font-mono font-bold text-emerald-400 text-sm">700 / 1,000 units (70%)</span>
+          </div>
+
+          <div class="h-3.5 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+            <div id="pool-progress-fill" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500 rounded-full transition-all duration-700" style="width: 70%;"></div>
+          </div>
+        </div>
+
+        <!-- Active Participants Breakdown -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs" id="participants-grid">
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800" id="card-participant-vv">
+            <span class="text-[10px] text-emerald-400 font-mono uppercase font-bold">Your Pledge</span>
+            <p class="font-bold text-white mt-0.5">Velvet &amp; Vine</p>
+            <p id="vv-committed-units" class="font-mono text-emerald-400 font-semibold">200 units</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-500 font-mono uppercase">Syndicate Partner</span>
+            <p class="font-bold text-white mt-0.5">Aura Athleisure</p>
+            <p class="font-mono text-slate-300">300 units</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-500 font-mono uppercase">Syndicate Partner</span>
+            <p class="font-bold text-white mt-0.5">Urban Loom</p>
+            <p class="font-mono text-slate-300">200 units</p>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 flex flex-col justify-between">
+            <span class="text-[10px] text-slate-500 font-mono uppercase">Remaining Buffer</span>
+            <p id="remaining-units-display" class="font-bold text-amber-300">300 units remaining</p>
+            <p class="text-[10px] text-slate-500">Apex Loom #04 allocated</p>
+          </div>
+        </div>
+
+        <!-- Action Bar with Mandatory Route Guard -->
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800">
+          <div class="text-xs text-slate-400 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span>Escrow secured by Stripe Treasury. 100% refundable if lab-dip does not match #FN-289.</span>
+          </div>
+
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button onclick="handleCommitClick()" class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-lg shadow-emerald-950/60 transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Commit Units to Pool #402</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 4. ACTIVE POOLS DIRECTORY & RESTORED MULTI-PARAMETRIC FILTERS -->
+    <!-- ===================================================================== -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Active Pools Directory</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Filter across material pipelines using multi-parametric search.</p>
+        </div>
+      </div>
+
+      <!-- Multi-Parametric Filter Bar -->
+      <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- 1. Fabric Search Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400">Fabric Search</label>
+          <input type="text" id="filter-fabric" oninput="filterPools()" placeholder="e.g. Linen, TENCEL, Cotton..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <!-- 2. GSM Range Dropdown -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400">GSM Range</label>
+          <select id="filter-gsm" onchange="filterPools()" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="all">All Weights</option>
+            <option value="light">Lightweight (&lt; 200 GSM / Jersey)</option>
+            <option value="medium">Medium Weight (200 - 300 GSM / Linen &amp; Terry)</option>
+            <option value="heavy">Heavy Weight (&gt; 300 GSM / Denim)</option>
+          </select>
+        </div>
+
+        <!-- 3. Color Code Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-400">Color Code</label>
+          <input type="text" id="filter-color" oninput="filterPools()" placeholder="e.g. #FN-289, #EC-102, #RC-108..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+      </div>
+
+      <!-- Multi-Card Grid for Active Pools -->
+      <div id="pools-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Populated dynamically via filterPools() -->
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 3. INTERACTIVE COST-SAVING & ROI CALCULATOR WIDGET -->
+    <!-- ===================================================================== -->
+    <section id="calculator-section" class="bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-10 space-y-8 shadow-xl">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-semibold mb-2 border border-emerald-800">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          <span>Interactive Cost-Saving &amp; ROI Calculator Widget</span>
+        </div>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white">Cost-Saving &amp; Cash Flow Simulator</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+          Adjust parameters to calculate working capital preserved and eliminated dead-stock risk.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Interactive Input Sliders -->
+        <div class="lg:col-span-7 space-y-6 bg-slate-900/60 p-6 rounded-2xl border border-slate-800">
+          
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-semibold text-slate-200">Desired Order Volume</label>
+              <span id="disp-desired-units" class="font-mono text-sm font-bold text-emerald-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">200 units</span>
+            </div>
+            <input type="range" id="slider-desired-units" min="50" max="500" step="25" value="200" oninput="updateCalculator()" class="w-full accent-emerald-500 h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>50 units</span><span>200 (Default)</span><span>500 units</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-semibold text-slate-200">Standalone Small-Batch Unit Price</label>
+              <span id="disp-small-price" class="font-mono text-sm font-bold text-red-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">$35 / unit</span>
+            </div>
+            <input type="range" id="slider-small-price" min="15" max="70" step="1" value="35" oninput="updateCalculator()" class="w-full accent-red-500 h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>$15</span><span>$35 (Default)</span><span>$70</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-semibold text-slate-200">Pooled Bulk Volume</label>
+              <span id="disp-bulk-vol" class="font-mono text-sm font-bold text-indigo-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">1,000 units</span>
+            </div>
+            <input type="range" id="slider-bulk-vol" min="500" max="3000" step="100" value="1000" oninput="updateCalculator()" class="w-full accent-indigo-500 h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>500 units</span><span>1,000 (Default)</span><span>3,000 units</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-semibold text-slate-200">Manufacturer Bulk Rate</label>
+              <span id="disp-bulk-rate" class="font-mono text-sm font-bold text-emerald-400 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">$15 / unit</span>
+            </div>
+            <input type="range" id="slider-bulk-rate" min="8" max="30" step="1" value="15" oninput="updateCalculator()" class="w-full accent-emerald-500 h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[11px] text-slate-500">
+              <span>$8</span><span>$15 (Default)</span><span>$30</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Real-time Output Display -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 shadow-lg">
+            <span class="text-xs font-mono uppercase tracking-wider text-slate-400 block font-semibold">
+              Real-Time Output Display
+            </span>
+
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between items-center p-3 rounded-xl bg-red-950/40 border border-red-800/60">
+                <div>
+                  <p class="font-bold text-red-200">Standalone Upfront Capital</p>
+                  <p class="text-[11px] text-red-400">(forced 1,000-unit buy)</p>
+                </div>
+                <span id="out-standalone" class="font-mono text-base font-bold text-red-400">$35,000</span>
+              </div>
+
+              <div class="flex justify-between items-center p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/60">
+                <div>
+                  <p class="font-bold text-emerald-200">Pooled Capital</p>
+                  <p class="text-[11px] text-emerald-400">(pay for exact 200 units)</p>
+                </div>
+                <span id="out-pooled" class="font-mono text-base font-bold text-emerald-400">$3,000</span>
+              </div>
+            </div>
+
+            <!-- Capital Saved Display -->
+            <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center space-y-1">
+              <span class="text-xs text-slate-400 font-medium">Capital Saved</span>
+              <div id="out-saved" class="text-3xl font-display font-bold text-emerald-400 font-mono">
+                $32,000
+              </div>
+              <span id="out-saved-pct" class="text-xs text-emerald-300 font-bold bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+                (80% Reduction)
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: AUTHENTICATION / LOGIN POPUP (#login-modal) -->
+  <!-- ===================================================================== -->
+  <div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-base text-white">Brand Authentication Required</h3>
+        <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Please authenticate to access FDIC-regulated milestone escrow and lock your brand into active production pools.
+      </p>
+
+      <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-xs">
+        <div class="space-y-1">
+          <label class="text-slate-300 font-semibold block">Verified Label Name</label>
+          <input type="text" id="login-brand-name" value="Velvet &amp; Vine" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white" readonly>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-slate-300 font-semibold block">Work Email</label>
+          <input type="email" value="elena@velvetandvine.com" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white" required>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-slate-300 font-semibold block">Password</label>
+          <input type="password" value="secret1234" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white" required>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all cursor-pointer">
+          Sign In as Velvet &amp; Vine (Verified)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: DYNAMIC ESCROW PLEDGE MODAL (Pool #402) -->
+  <!-- ===================================================================== -->
+  <div id="pledge-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 space-y-4">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <h3 class="font-bold text-base text-white">Commit Units to Pool #402</h3>
+        </div>
+        <button onclick="closePledgeModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Target Material:</span>
+          <span class="text-white font-semibold">200 GSM Organic Linen (French Navy)</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">Wholesale Rate:</span>
+          <span class="text-emerald-400 font-mono font-bold" id="pledge-unit-rate">$14.50 / yd</span>
+        </div>
+      </div>
+
+      <!-- LOCKED BUYER BADGE (Manual text input removed per instructions) -->
+      <div class="p-3 bg-emerald-950/60 border border-emerald-500/40 rounded-xl flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase font-mono text-emerald-400 font-bold block">Authenticated Buyer Badge</span>
+          <span class="text-xs font-bold text-white" id="pledge-locked-badge">Velvet &amp; Vine (Verified)</span>
+        </div>
+        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+          Locked Session
+        </span>
+      </div>
+
+      <!-- Units to Commit Input -->
+      <div class="space-y-1 text-xs">
+        <div class="flex justify-between items-center">
+          <label class="text-slate-300 font-semibold">Units to Commit</label>
+          <span id="pledge-cost-calc" class="font-mono text-emerald-400 font-bold">$2,175.00</span>
+        </div>
+        <input type="number" id="pledge-units-input" min="25" max="300" value="150" oninput="updatePledgeCost()" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        <p class="text-[11px] text-slate-500">Minimum 25 units. Pay zero until 1,000-unit threshold locks.</p>
+      </div>
+
+      <!-- Confirm Button -->
+      <button onclick="confirmEscrowCommitment()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all shadow-lg cursor-pointer">
+        Confirm Escrow Commitment
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- REAL-TIME NOTIFICATIONS DRAWER -->
+  <!-- ===================================================================== -->
+  <div id="notifications-drawer" class="hidden fixed inset-0 z-50 flex justify-end">
+    <div class="absolute inset-0 bg-slate-950/70" onclick="toggleNotifications(false)"></div>
+    <div class="relative w-full max-w-sm bg-slate-950 border-l border-slate-800 h-full p-5 flex flex-col justify-between shadow-2xl">
+      <div class="space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <h3 class="font-bold text-sm text-white">Syndicate Alerts</h3>
+          <button onclick="toggleNotifications(false)" class="p-1 text-slate-400 hover:text-white">✕</button>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div class="p-3 rounded-xl border bg-slate-900 border-emerald-500/40 space-y-1">
+            <p class="font-bold text-white">Aura Athleisure joined Pool #402 (+300 units)</p>
+            <p class="text-slate-300 text-[11px]">Vancouver athletic label pledged 300 units.</p>
+            <span class="text-[10px] text-slate-500 font-mono block">12m ago</span>
+          </div>
+          <div class="p-3 rounded-xl border bg-slate-900 border-emerald-500/40 space-y-1">
+            <p class="font-bold text-white">Apex Textile Mills confirmed schedule</p>
+            <p class="text-slate-300 text-[11px]">Rapier looms scheduled in Guimarães.</p>
+            <span class="text-[10px] text-slate-500 font-mono block">2h ago</span>
+          </div>
+        </div>
+      </div>
+      <div class="pt-4 border-t border-slate-800 text-[11px] text-slate-500 text-center">
+        FDIC Escrow Protocol Active
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- COMPLETE JAVASCRIPT ENGINE -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. Global User Session State (Default: null)
+    let currentUser = null;
+
+    // 2. Global Currency Exchange Rates
+    let currentCurrency = 'USD';
+    const EXCHANGE_RATES = {
+      USD: { rate: 1.0, symbol: '$' },
+      EUR: { rate: 0.92, symbol: '€' },
+      GBP: { rate: 0.79, symbol: '£' },
+      INR: { rate: 83.5, symbol: '₹' }
+    };
+
+    function formatCur(usdVal) {
+      const { rate, symbol } = EXCHANGE_RATES[currentCurrency] || EXCHANGE_RATES.USD;
+      const converted = usdVal * rate;
+      if (currentCurrency === 'INR') {
+        return `${symbol}${Math.round(converted).toLocaleString('en-IN')}`;
+      }
+      return `${symbol}${converted.toLocaleString(undefined, {
+        minimumFractionDigits: converted % 1 === 0 ? 0 : 2,
+        maximumFractionDigits: 2
+      })}`;
+    }
+
+    // Active Pools Dataset (including Pool #402 Linen, Pool #419 TENCEL, Pool #108 Recycled Cotton)
+    let poolsData = [
+      {
+        id: '402',
+        poolNumber: 402,
+        title: '200 GSM Organic Linen - French Navy',
+        fabric: 'Organic Linen & Flax',
+        supplier: 'Apex Textile Mills (Portugal)',
+        gsm: 200,
+        colorCode: '#FN-289',
+        committed: 700,
+        target: 1000,
+        unitPrice: 14.50
+      },
+      {
+        id: '419',
+        poolNumber: 419,
+        title: '280 GSM TENCEL Organic French Terry',
+        fabric: 'TENCEL Lyocell & Cotton',
+        supplier: 'Lenzing Mill (Turkey)',
+        gsm: 280,
+        colorCode: '#EC-102',
+        committed: 950,
+        target: 1200,
+        unitPrice: 12.80
+      },
+      {
+        id: '108',
+        poolNumber: 108,
+        title: '180 GSM Circular Recycled Cotton Jersey',
+        fabric: 'Recycled Organic Cotton',
+        supplier: 'Recover™ Mill (Spain)',
+        gsm: 180,
+        colorCode: '#RC-108',
+        committed: 720,
+        target: 1000,
+        unitPrice: 8.90
+      }
+    ];
+
+    // Initialize UI on DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHeaderAuth();
+      updateCalculator();
+      filterPools();
+    });
+
+    // 1. Session Enforcement & Header UI
+    function renderHeaderAuth() {
+      const container = document.getElementById('auth-header-container');
+      if (currentUser) {
+        container.innerHTML = `
+          <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="font-bold text-white">${currentUser.brandName}</span>
+            <span class="text-emerald-400 font-mono text-[11px]">(Verified Buyer)</span>
+          </div>
+          <button onclick="handleLogout()" class="px-2.5 py-1 text-xs text-slate-400 hover:text-red-400 bg-slate-900 border border-slate-800 rounded-lg cursor-pointer">
+            [Log Out]
+          </button>
+        `;
+        document.getElementById('welcome-header-title').innerText = "Welcome back, Velvet & Vine (Verified Boutique Label)";
+      } else {
+        container.innerHTML = `
+          <button onclick="openLoginModal()" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-500 rounded-lg transition-colors cursor-pointer">
+            Log In
+          </button>
+        `;
+        document.getElementById('welcome-header-title').innerText = "Welcome, Guest Buyer — Explore Group Sourcing Pools";
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById('login-modal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('login-modal').classList.add('hidden');
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      currentUser = { brandName: 'Velvet & Vine', verified: true };
+      closeLoginModal();
+      renderHeaderAuth();
+      showToast("Session Authenticated: Welcome back, Velvet & Vine (Verified Buyer).");
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      renderHeaderAuth();
+      showToast("Signed out. You are now browsing as a guest.");
+    }
+
+    // Toast Notification helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast-notification');
+      document.getElementById('toast-message').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4500);
+    }
+
+    // 1. Mandatory Route Guard for Escrow Pledges
+    function handleCommitClick() {
+      if (currentUser === null) {
+        // 1. Block action
+        // 2. Display security toast notification
+        showToast("Authentication Required: Please log in to commit escrow funds.");
+        // 3. Automatically open login modal
+        openLoginModal();
+        return;
+      }
+
+      // If authenticated as Velvet & Vine, lock badge and open modal
+      document.getElementById('pledge-locked-badge').innerText = `${currentUser.brandName} (Verified)`;
+      updatePledgeCost();
+      document.getElementById('pledge-modal').classList.remove('hidden');
+    }
+
+    function closePledgeModal() {
+      document.getElementById('pledge-modal').classList.add('hidden');
+    }
+
+    function updatePledgeCost() {
+      const units = parseInt(document.getElementById('pledge-units-input').value) || 0;
+      const rate = 14.50;
+      document.getElementById('pledge-unit-rate').innerText = `${formatCur(rate)} / yd`;
+      document.getElementById('pledge-cost-calc').innerText = formatCur(units * rate);
+    }
+
+    // 3. Dynamic Escrow Pledge Execution (Pool #402)
+    function confirmEscrowCommitment() {
+      const unitsPledged = parseInt(document.getElementById('pledge-units-input').value) || 150;
+      
+      // 1. Close modal cleanly without reload
+      closePledgeModal();
+
+      // 2. Update Pool #402 total progress: 700 -> 850 / 1,000 units (85%)
+      const pool = poolsData.find(p => p.id === '402');
+      if (pool) {
+        pool.committed = Math.min(pool.target, pool.committed + unitsPledged);
+        const newPct = Math.round((pool.committed / pool.target) * 100);
+        const remaining = Math.max(0, pool.target - pool.committed);
+
+        document.getElementById('pool-progress-text').innerText = `${pool.committed} / ${pool.target} units (${newPct}%)`;
+        
+        // 3. Smoothly animate progress bar width
+        document.getElementById('pool-progress-fill').style.width = `${newPct}%`;
+
+        // 4. Update remaining units count
+        document.getElementById('remaining-units-display').innerText = `${remaining} units remaining`;
+        document.getElementById('stat-pending-status').innerText = `Pool #402 (${newPct}% Complete)`;
+        document.getElementById('stat-pending-desc').innerText = `${remaining} units remaining · 4 days left`;
+
+        // 5. Update Velvet & Vine's commitment card
+        const currentVv = parseInt(document.getElementById('vv-committed-units').innerText) || 200;
+        document.getElementById('vv-committed-units').innerText = `${currentVv + unitsPledged} units`;
+      }
+
+      showToast(`Escrow Commitment Confirmed: Velvet & Vine pledged ${unitsPledged} units to Pool #402.`);
+    }
+
+    // 2. Global Currency Exchange Switcher Logic
+    function handleCurrencyChange(newCur) {
+      currentCurrency = newCur;
+      // Recalculate financial displays
+      document.getElementById('welcome-escrow-amount').innerText = formatCur(2900);
+      document.getElementById('stat-total-saved').innerText = formatCur(12000);
+      document.getElementById('pool-402-wholesale-display').innerText = `${formatCur(14.50)}/yard wholesale`;
+      updateCalculator();
+      filterPools();
+      updatePledgeCost();
+      showToast(`Currency updated to ${newCur}. All wholesale and escrow figures converted.`);
+    }
+
+    // 3. Cost-Saving & ROI Calculator
+    function updateCalculator() {
+      const desiredUnits = parseInt(document.getElementById('slider-desired-units').value);
+      const smallPrice = parseInt(document.getElementById('slider-small-price').value);
+      const bulkVol = parseInt(document.getElementById('slider-bulk-vol').value);
+      const bulkRate = parseInt(document.getElementById('slider-bulk-rate').value);
+
+      document.getElementById('disp-desired-units').innerText = `${desiredUnits} units`;
+      document.getElementById('disp-small-price').innerText = `${formatCur(smallPrice)} / unit`;
+      document.getElementById('disp-bulk-vol').innerText = `${bulkVol.toLocaleString()} units`;
+      document.getElementById('disp-bulk-rate').innerText = `${formatCur(bulkRate)} / unit`;
+
+      const standaloneCap = bulkVol * smallPrice;
+      const pooledCap = desiredUnits * bulkRate;
+      const saved = Math.max(0, standaloneCap - pooledCap);
+      const reduction = Math.round((saved / standaloneCap) * 100);
+
+      document.getElementById('out-standalone').innerText = formatCur(standaloneCap);
+      document.getElementById('out-pooled').innerText = formatCur(pooledCap);
+      document.getElementById('out-saved').innerText = formatCur(saved);
+      document.getElementById('out-saved-pct').innerText = `(${reduction}% Reduction)`;
+    }
+
+    // 4. Multi-Parametric Search & Case-Insensitive Filter (filterPools())
+    function filterPools() {
+      const fabricInput = (document.getElementById('filter-fabric')?.value || '').trim().toLowerCase();
+      const gsmSelect = document.getElementById('filter-gsm')?.value || 'all';
+      const colorInput = (document.getElementById('filter-color')?.value || '').trim().toLowerCase();
+
+      const filtered = poolsData.filter(pool => {
+        // Fabric match
+        const matchesFabric = !fabricInput || 
+          pool.title.toLowerCase().includes(fabricInput) || 
+          pool.fabric.toLowerCase().includes(fabricInput) ||
+          pool.supplier.toLowerCase().includes(fabricInput);
+
+        // GSM match
+        let matchesGsm = true;
+        if (gsmSelect === 'light') matchesGsm = pool.gsm < 200;
+        else if (gsmSelect === 'medium') matchesGsm = pool.gsm >= 200 && pool.gsm <= 300;
+        else if (gsmSelect === 'heavy') matchesGsm = pool.gsm > 300;
+
+        // Color Code match
+        const matchesColor = !colorInput || 
+          pool.colorCode.toLowerCase().includes(colorInput) ||
+          pool.title.toLowerCase().includes(colorInput);
+
+        return matchesFabric && matchesGsm && matchesColor;
+      });
+
+      renderPoolsGrid(filtered);
+    }
+
+    function renderPoolsGrid(pools) {
+      const grid = document.getElementById('pools-grid');
+      if (!grid) return;
+
+      if (pools.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-3 text-center py-12 bg-slate-950 rounded-2xl border border-slate-800">
+            <p class="text-sm font-semibold text-white">No pools match your search criteria.</p>
+            <p class="text-xs text-slate-400 mt-1">Try clearing GSM or Color code filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = pools.map(p => {
+        const pct = Math.round((p.committed / p.target) * 100);
+        return `
+          <div class="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 hover:border-slate-700 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs font-bold bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded border border-emerald-500/30">Pool #${p.poolNumber}</span>
+              <span class="text-xs font-mono text-slate-400">${p.gsm} GSM · ${p.colorCode}</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-base text-white">${p.title}</h4>
+              <p class="text-xs text-slate-400">${p.supplier}</p>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-mono">
+                <span class="text-emerald-400">${p.committed} / ${p.target} units</span>
+                <span class="text-slate-400">${pct}%</span>
+              </div>
+              <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
+              <span class="font-bold font-mono text-emerald-400">${formatCur(p.unitPrice)} / yd</span>
+              <button onclick="handleCommitClick()" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg cursor-pointer">
+                Commit
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleNotifications(show) {
+      const drawer = document.getElementById('notifications-drawer');
+      if (show) {
+        drawer.classList.remove('hidden');
+        document.getElementById('unread-badge').innerText = '0';
+      } else {
+        drawer.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

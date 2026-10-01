@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOQ Match — B2B Group Sourcing Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    .hp-field { display: none !important; position: absolute; left: -9999px; }
+  </style>
+</head>
+<body class="bg-[#0B0F19] text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-20 right-4 z-50 pointer-events-none space-y-2"></div>
+
+  <!-- ======================================================================= -->
+  <!-- 3. HEADER CONTROLS & MULTI-CURRENCY SWITCHER -->
+  <!-- ======================================================================= -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-slate-100 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+          <a href="#" onclick="switchView('public'); return false;" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform duration-200">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display font-bold text-xl tracking-tight text-white flex items-center gap-1.5">
+                MOQ Match
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              </span>
+              <span class="text-[11px] font-medium tracking-wider text-slate-400 uppercase">
+                B2B Group Sourcing Platform
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Center Nav Links (Active on Public View) -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="#how-it-works" class="text-slate-300 hover:text-white transition-colors">How It Works</a>
+          <a href="#active-pools" class="text-slate-300 hover:text-white transition-colors flex items-center gap-1.5">
+            <span>Active Pools</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          </a>
+          <a href="#savings-calculator" class="text-slate-300 hover:text-white transition-colors">Savings Calculator</a>
+          <a href="#escrow-protection" class="text-slate-300 hover:text-white transition-colors">Escrow Protection</a>
+        </nav>
+
+        <!-- Right Controls: Currency Selector & Auth Controls -->
+        <div class="flex items-center gap-3">
+          
+          <!-- Dynamic Currency Selector (USD, EUR, GBP, INR) -->
+          <div class="flex items-center gap-1.5 bg-slate-800/90 border border-slate-700/80 rounded-lg px-2.5 py-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-transparent text-xs font-mono font-bold text-emerald-400 focus:outline-none cursor-pointer">
+              <option value="USD" class="bg-slate-900 text-white">USD ($)</option>
+              <option value="EUR" class="bg-slate-900 text-white">EUR (€)</option>
+              <option value="GBP" class="bg-slate-900 text-white">GBP (£)</option>
+              <option value="INR" class="bg-slate-900 text-white">INR (₹)</option>
+            </select>
+          </div>
+
+          <!-- Unauthenticated Controls: Log In & Get Started -->
+          <div id="nav-unauth" class="flex items-center gap-2">
+            <button onclick="openAuthModal('brand', 'login')" class="px-3.5 py-2 text-xs sm:text-sm font-medium text-slate-200 hover:text-white hover:bg-slate-800/80 rounded-lg transition-colors border border-slate-700/60 cursor-pointer">
+              Log In
+            </button>
+            <button onclick="openAuthModal('brand', 'register')" class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 rounded-lg shadow-md shadow-emerald-900/40 transition-all cursor-pointer">
+              Get Started
+            </button>
+          </div>
+
+          <!-- Authenticated Role Indicator Badge & Log Out -->
+          <div id="nav-auth" class="hidden items-center gap-2.5">
+            <!-- Brand Badge -->
+            <div id="nav-badge-brand" class="hidden items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="nav-brand-name" class="font-bold text-white">Velvet &amp; Vine</span>
+              <span class="text-emerald-400 font-mono text-[11px]">(Verified Buyer)</span>
+            </div>
+
+            <!-- Manufacturer Badge -->
+            <div id="nav-badge-factory" class="hidden items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-950/70 border border-indigo-500/40 text-xs">
+              <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              <span id="nav-factory-name" class="font-bold text-white">Apex Textile Mills</span>
+              <span class="text-indigo-300 font-mono text-[11px]">(Mill Admin)</span>
+            </div>
+
+            <!-- Log Out Button -->
+            <button onclick="handleLogout()" class="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-red-400 bg-slate-800/80 hover:bg-slate-800 rounded-lg transition-colors border border-slate-700/60 cursor-pointer flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              <span>Log Out</span>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- 2. TOP-LEVEL VIEW CONTAINERS (ROUTING ENGINE) -->
+  <!-- ======================================================================= -->
+
+  <!-- CONTAINER 1: #view-public (Public Landing Page, Category Filters, Pool #402 Preview) -->
+  <div id="view-public" class="block flex-grow">
+    
+    <!-- Hero Section -->
+    <section class="py-16 sm:py-24 text-center px-4 relative overflow-hidden bg-gradient-to-b from-slate-900 to-[#0B0F19]">
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Decentralized B2B Demand Aggregation
+        </div>
+        <h1 class="font-display font-extrabold text-4xl sm:text-6xl text-white tracking-tight leading-tight">
+          Pool Demand. Beat MOQs. <br class="hidden sm:inline"/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
+            Cut Deadstock Risk by 80%.
+          </span>
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Combine order volumes with vetted boutique apparel labels to hit Tier-1 European mill minimums without over-purchasing. All funds guaranteed in milestone escrow.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <button onclick="openAuthModal('brand', 'register')" class="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-950/50 transition-all cursor-pointer">
+            Register Brand &amp; Start Pooling
+          </button>
+          <button onclick="openAuthModal('manufacturer', 'login')" class="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition-all cursor-pointer">
+            Manufacturer Portal (Apex Mills) →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Public Featured Pool #402 Preview Section -->
+    <section id="active-pools" class="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="text-emerald-400 text-xs font-mono uppercase tracking-wider font-bold">Featured Sourcing Consortium</span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mt-1">
+            Real-Time Demand Coalition: Pool #402
+          </h2>
+          <p class="text-slate-400 text-xs sm:text-sm">200 GSM Organic Linen · French Navy Dye · Apex Textile Mills (ISO 9001)</p>
+        </div>
+        <div>
+          <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/80 px-3 py-1.5 rounded-xl border border-emerald-800">
+            70% Complete (700 / 1,000 Units)
+          </span>
+        </div>
+      </div>
+
+      <!-- Public Pool #402 Card -->
+      <div class="rounded-2xl bg-[#131C2E] border border-slate-800 p-6 sm:p-8 space-y-6 shadow-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          
+          <!-- Column 1: Progress & Remaining Buffer -->
+          <div class="space-y-4">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Consortium Progress</span>
+              <span id="pub-progress-text" class="font-mono font-bold text-emerald-400">700 / 1,000 units (70%)</span>
+            </div>
+            <div class="h-3 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div id="pub-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 to-indigo-500 rounded-full transition-all duration-500" style="width: 70%"></div>
+            </div>
+            <div class="p-3 bg-amber-950/40 border border-amber-800/60 rounded-xl text-amber-300 text-xs font-semibold flex items-center justify-between">
+              <span id="pub-needed-units">300 units needed to trigger loom batch</span>
+              <span class="text-[10px] text-slate-400">Closes in 4 days</span>
+            </div>
+          </div>
+
+          <!-- Column 2: Financial Comparison -->
+          <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-xs space-y-2">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Pooled Wholesale Rate:</span>
+              <span id="pub-price-rate" class="font-mono font-bold text-emerald-400">$14.50 / yd</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Standalone Middleman Rate:</span>
+              <span id="pub-standalone-rate" class="font-mono text-red-400 line-through">$35.00 / yd</span>
+            </div>
+            <div class="pt-2 border-t border-slate-800 flex justify-between font-bold text-slate-200">
+              <span>Co-Buyers Joined:</span>
+              <span class="text-indigo-300">Velvet &amp; Vine (200), Aura (300), Loom (200)</span>
+            </div>
+          </div>
+
+          <!-- Column 3: Escrow Guarded CTA -->
+          <div class="space-y-3 text-center sm:text-right">
+            <button onclick="handlePublicPledgeClick()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-950/60 transition-all cursor-pointer flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>Commit Units to Pool #402</span>
+            </button>
+            <p class="text-[11px] text-slate-500">Requires verified brand session to authorize escrow.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- CONTAINER 2: #view-brand-dashboard (Authenticated Velvet & Vine Portal) -->
+  <div id="view-brand-dashboard" class="hidden flex-grow bg-slate-900 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+      
+      <!-- Welcome Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            Buyer Dashboard Active · Sourcing Syndicate
+          </div>
+          <h1 class="font-display font-bold text-2xl sm:text-3xl text-white">
+            Welcome back, Velvet &amp; Vine (Verified Boutique Label)
+          </h1>
+          <p class="text-xs text-slate-400">Member Entity: #VV-84920 · Melbourne Atelier</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="openCommitModal()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md transition-all cursor-pointer">
+            + Commit Units to Pool #402
+          </button>
+        </div>
+      </div>
+
+      <!-- Top Stat Cards (2 Active Pools, $12,000 Saved, 80% Risk Reduction, Pool #402 Status) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Stat 1: Active Pools -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Active Pools</span>
+          <div class="text-3xl font-bold font-mono text-white">2</div>
+          <p class="text-[11px] text-slate-500">Pool #402 (Linen), Pool #419 (TENCEL)</p>
+        </div>
+
+        <!-- Stat 2: Total Capital Saved -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Total Capital Saved</span>
+          <div id="brand-stat-savings" class="text-3xl font-bold font-mono text-emerald-400">$12,000</div>
+          <p class="text-[11px] text-slate-500">Vs standalone middleman minimums</p>
+        </div>
+
+        <!-- Stat 3: Unsold Inventory Risk Reduction -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Unsold Inventory Risk Reduction</span>
+          <div class="text-3xl font-bold font-mono text-indigo-400">80%</div>
+          <p class="text-[11px] text-slate-500">Purchasing exact required garment yield</p>
+        </div>
+
+        <!-- Stat 4: Pending Match Status -->
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Pending Match Status</span>
+          <div id="brand-stat-match" class="text-xl font-bold font-mono text-amber-300">Pool #402 (70% Complete)</div>
+          <p id="brand-stat-match-sub" class="text-[11px] text-slate-500">300 units needed to trigger loom batch</p>
+        </div>
+
+      </div>
+
+      <!-- SECTION 1: MY ACTIVE CONSORTIUMS (Velvet & Vine Current Commitments) -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Velvet &amp; Vine Active Commitments
+            </div>
+            <h2 class="font-display font-bold text-2xl text-white">My Active Consortiums</h2>
+            <p class="text-xs text-slate-400">Your current commitments, allocated looms, and milestone escrow holds.</p>
+          </div>
+          <span class="px-3 py-1 bg-slate-950 border border-slate-800 text-emerald-400 text-xs font-mono font-bold rounded-lg">1 Active Pool</span>
+        </div>
+
+        <!-- Pool #402 Deep-Dive Card -->
+        <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-3">
+            <div>
+              <span class="text-xs font-mono text-emerald-400 uppercase font-bold">Dynamic Consortium Deep-Dive</span>
+              <h3 class="font-display font-bold text-xl text-white">Pool #402 — 200 GSM Organic Linen (French Navy Dye)</h3>
+              <p class="text-xs text-slate-400">Supplier: Apex Textile Mills (ISO 9001 Certified · Guimarães, Portugal)</p>
+            </div>
+            <span id="brand-pool-match-badge" class="px-3 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 text-xs font-mono font-bold">
+              92% Compatibility Match
+            </span>
+          </div>
+
+          <!-- Interactive Progress Bar -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-semibold text-white">Consortium Demand Aggregation:</span>
+              <span id="brand-pool-units-text" class="font-mono font-bold text-emerald-400">700 / 1,000 units (70%)</span>
+            </div>
+            <div class="h-3.5 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+              <div id="brand-pool-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500 rounded-full transition-all duration-500" style="width: 70%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400">
+              <span>Velvet &amp; Vine Pledge: <strong id="brand-pledge-units" class="text-emerald-400">200 units</strong></span>
+              <span id="brand-remaining-text">300 units remaining to hit MOQ</span>
+            </div>
+          </div>
+
+          <!-- Escrow Pledge Tracker Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800">
+              <span class="text-[10px] uppercase font-mono text-slate-500">Your Escrow Deposit</span>
+              <div id="brand-escrow-amount" class="text-lg font-mono font-bold text-white mt-0.5">$2,900.00</div>
+              <span class="text-[10px] text-emerald-400">FDIC Escrow Held</span>
+            </div>
+            <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800">
+              <span class="text-[10px] uppercase font-mono text-slate-500">Production Window</span>
+              <div class="text-lg font-mono font-bold text-white mt-0.5">Oct 15 - Oct 28</div>
+              <span class="text-[10px] text-slate-400">Apex Loom #04 allocated</span>
+            </div>
+            <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] uppercase font-mono text-slate-500">Pledge Actions</span>
+                <p class="text-xs text-slate-300 font-semibold mt-0.5">Commit 150 Additional Units</p>
+              </div>
+              <button onclick="openCommitModal()" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-lg cursor-pointer transition-all">
+                Commit Units
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: MARKETPLACE POOL DIRECTORY (8+ Card Catalog) -->
+      <div class="space-y-6 pt-4 border-t border-slate-800">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider border border-slate-700 mb-2">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+              <span>Live B2B Demand Pools</span>
+              <span class="text-slate-500">·</span>
+              <span>Tier-1 Mills</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl text-white">Marketplace Pool Directory</h3>
+            <p class="text-xs text-slate-400 mt-1">Search, filter, and surf a realistic catalog of diverse B2B demand pools to access wholesale prices.</p>
+          </div>
+          <span id="portal-pools-count" class="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-emerald-400 font-semibold self-start md:self-auto">8 Active Pools Available</span>
+        </div>
+
+        <!-- Filter & Live Search Bar Engine -->
+        <div class="bg-slate-950 p-4 sm:p-5 rounded-2xl border border-slate-800 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xl">
+          <!-- 1. Search input -->
+          <div class="relative flex-grow max-w-md">
+            <svg class="w-4 h-4 text-slate-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search fabric title, supplier, or colorway code..."
+              oninput="handlePortalFilterChange()"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+
+          <!-- Quick Filters: GSM, Fabric, Sort -->
+          <div class="flex flex-wrap items-center gap-3 text-xs">
+            <!-- 2. GSM Dropdown -->
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-300">
+              <span class="text-slate-400 font-medium">GSM:</span>
+              <select id="gsm-filter" onchange="handlePortalFilterChange()" class="bg-transparent text-xs text-white font-semibold focus:outline-none cursor-pointer">
+                <option value="all" class="bg-slate-900 text-white">All Weights</option>
+                <option value="light" class="bg-slate-900 text-white">Light (&lt; 150 GSM)</option>
+                <option value="medium" class="bg-slate-900 text-white">Medium (150 - 250 GSM)</option>
+                <option value="heavy" class="bg-slate-900 text-white">Heavy (&gt; 250 GSM)</option>
+              </select>
+            </div>
+
+            <!-- 3. Fabric Type Dropdown -->
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-300">
+              <span class="text-slate-400 font-medium">Fabric:</span>
+              <select id="fabric-filter" onchange="handlePortalFilterChange()" class="bg-transparent text-xs text-white font-semibold focus:outline-none cursor-pointer">
+                <option value="all" class="bg-slate-900 text-white">All Types</option>
+                <option value="linen" class="bg-slate-900 text-white">Linen</option>
+                <option value="cotton" class="bg-slate-900 text-white">Cotton</option>
+                <option value="denim" class="bg-slate-900 text-white">Denim</option>
+                <option value="silk" class="bg-slate-900 text-white">Silk</option>
+                <option value="synthetics" class="bg-slate-900 text-white">Synthetics</option>
+                <option value="wool" class="bg-slate-900 text-white">Wool</option>
+              </select>
+            </div>
+
+            <!-- 4. Sorting Dropdown -->
+            <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-slate-300">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+              <span class="text-slate-400 font-medium">Sort:</span>
+              <select id="sort-filter" onchange="handlePortalFilterChange()" class="bg-transparent text-xs text-white font-semibold focus:outline-none cursor-pointer">
+                <option value="highest-fill" class="bg-slate-900 text-white">Highest % Filled</option>
+                <option value="closing-soonest" class="bg-slate-900 text-white">Closing Soonest</option>
+                <option value="lowest-price" class="bg-slate-900 text-white">Lowest Wholesale Price</option>
+              </select>
+            </div>
+
+            <!-- Reset Button -->
+            <button onclick="resetPortalFilters()" class="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors cursor-pointer" title="Reset all filters">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 8+ Catalog Grid Container -->
+        <div id="marketplace-pools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CONTAINER 3: #view-factory-console (Authenticated Apex Textile Mills Portal) -->
+  <div id="view-factory-console" class="hidden flex-grow bg-slate-900 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+      
+      <!-- Factory Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/80 border border-indigo-700 text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            Apex Textile Mills — Factory Management Console
+          </div>
+          <h1 class="font-display font-bold text-2xl sm:text-3xl text-white">
+            Factory Downtime Monetization Console
+          </h1>
+          <p class="text-xs text-slate-400">Facility: Guimarães, Portugal · ISO 9001 &amp; GOTS Certified</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-950 px-3 py-1.5 rounded-lg border border-emerald-800">
+            Escrow Backed POs
+          </span>
+        </div>
+      </div>
+
+      <!-- Loom #04 Status Dedicated Spotlight Card -->
+      <div class="bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-7 shadow-xl space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800/80 gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-950/80 border border-indigo-700/50 flex items-center justify-center text-indigo-400 font-mono font-bold text-sm">
+              #04
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-display font-bold text-lg text-white">
+                  Apex Dornier High-Speed Rapier Loom #04
+                </h3>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-bold">
+                  Assigned to Pool #402
+                </span>
+              </div>
+              <p class="text-xs text-slate-400">
+                200 GSM Organic Linen · French Navy Dye (#FN-289) · GOTS Certified
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="factory-loom-badge" class="px-3.5 py-1.5 rounded-full text-xs font-mono font-bold flex items-center gap-1.5 border bg-amber-950/70 text-amber-300 border-amber-500/60 shadow-amber-950/30 animate-pulse">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="factory-loom-status-text">Loom #04 Status: Pending 300 units</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Target MOQ -->
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span class="text-xs text-slate-400 block font-medium">Target MOQ</span>
+            <div class="font-mono text-2xl font-bold text-white">1,000 units</div>
+            <span id="factory-pooled-subtext" class="text-[11px] text-slate-500 font-mono">700 units pooled (70%)</span>
+          </div>
+
+          <!-- Escrow Locked -->
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1">
+            <span class="text-xs text-slate-400 block font-medium">Escrow Locked</span>
+            <div id="factory-escrow-locked" class="font-mono text-2xl font-bold text-emerald-400">$10,150.00</div>
+            <span class="text-[11px] text-emerald-400/80 font-mono flex items-center gap-1">
+              ✓ Guaranteed in FDIC Trust Account
+            </span>
+          </div>
+
+          <!-- Action Button: Authorize Mill Run Upon 100% Fill -->
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between">
+            <span class="text-xs text-slate-400 block font-medium">Production Action</span>
+            <button id="factory-authorize-btn" onclick="authorizeMillRun()" class="w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-emerald-950/50">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>Authorize Mill Run Upon 100% Fill</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factory Overview Panel (4 Metrics) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Machine Capacity Utilization</span>
+          <div class="text-3xl font-bold font-mono text-emerald-400">82%</div>
+          <p class="text-[11px] text-slate-500">18 of 22 looms active</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Open Aggregate POs</span>
+          <div class="text-3xl font-bold font-mono text-white">4</div>
+          <p class="text-[11px] text-slate-500">Pools #402, #408, #419, #425</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Guaranteed Escrow Funds Held</span>
+          <div id="factory-stat-escrow" class="text-3xl font-bold font-mono text-emerald-400">$45,000</div>
+          <p class="text-[11px] text-slate-500">100% funded across open pools</p>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+          <span class="text-xs text-slate-400 font-medium">Downtime Hours Saved</span>
+          <div class="text-3xl font-bold font-mono text-amber-300">120 hrs</div>
+          <p class="text-[11px] text-slate-500">$18,400 overhead recovered</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 1. DUAL-ROLE AUTHENTICATION MODAL (#login-modal) -->
+  <!-- ======================================================================= -->
+  <div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+    <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden z-10 text-slate-800 p-6 space-y-5">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+            MOQ Match Sourcing Protocol
+          </span>
+        </div>
+        <button onclick="closeAuthModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Intercept Alert Notice Banner -->
+      <div id="auth-intercept-banner" class="hidden p-3 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-900 flex items-center gap-2.5">
+        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <span id="auth-intercept-text" class="font-semibold">Please sign in as a Brand to commit units.</span>
+      </div>
+
+      <!-- Role Toggle Tab (Tab A: Apparel Brand vs Tab B: Textile Mill / Factory) -->
+      <div class="space-y-1.5">
+        <label class="text-[11px] font-mono uppercase tracking-wider text-slate-500 font-bold block">
+          Select Account Role
+        </label>
+        <div class="grid grid-cols-2 p-1 bg-slate-100 rounded-xl border border-slate-200">
+          <button id="tab-role-brand" type="button" onclick="setRoleTab('brand')" class="py-2 px-3 rounded-lg text-xs font-bold transition-all bg-white text-emerald-700 shadow-sm border border-slate-200/80 cursor-pointer">
+            Apparel Brand
+          </button>
+          <button id="tab-role-factory" type="button" onclick="setRoleTab('manufacturer')" class="py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-slate-800 cursor-pointer">
+            Textile Mill / Factory
+          </button>
+        </div>
+      </div>
+
+      <!-- Toggle Tabs: Sign In vs Register New Account -->
+      <div class="flex border-b border-slate-200 gap-6 text-xs font-semibold">
+        <button id="tab-mode-login" type="button" onclick="setAuthMode('login')" class="pb-2 border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer">
+          Sign In
+        </button>
+        <button id="tab-mode-register" type="button" onclick="setAuthMode('register')" class="pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 cursor-pointer">
+          Register New Account
+        </button>
+      </div>
+
+      <!-- Quick Demo-Fill Buttons for Evaluation -->
+      <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold block">
+          Quick Demo Sign-In (One-Click Evaluation)
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button type="button" onclick="quickFillBrand()" class="py-2 px-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>Sign In as Velvet &amp; Vine (Brand)</span>
+          </button>
+          <button type="button" onclick="quickFillManufacturer()" class="py-2 px-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-300 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+            <span>Sign In as Apex Textile Mills (Manufacturer)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3.5">
+        <input type="text" name="website_url" class="hp-field" tabindex="-1" autocomplete="off" />
+
+        <div class="space-y-1">
+          <label id="auth-name-label" class="text-xs font-semibold text-slate-700">Apparel Brand / Company Name *</label>
+          <input id="auth-name-input" type="text" required value="Velvet & Vine" class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-700">Work Email *</label>
+          <input id="auth-email-input" type="email" required value="elena@velvetandvine.com" class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-xs font-semibold text-slate-700">Password *</label>
+          <input id="auth-pass-input" type="password" required value="••••••••••••" class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+        </div>
+
+        <button id="auth-submit-btn" type="submit" class="w-full py-3 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md transition-all cursor-pointer">
+          Sign In as Velvet &amp; Vine (Brand)
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- 4. PLEDGE ESCROW MODAL (#pledge-modal) -->
+  <!-- ======================================================================= -->
+  <div id="pledge-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+    <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden z-10 text-slate-800 p-6 space-y-5">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500">
+            Escrow Backed Commitment
+          </span>
+        </div>
+        <button onclick="closeCommitModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div>
+        <h3 id="pledge-modal-title" class="text-xl font-bold text-slate-900">Commit Units to Pool #402</h3>
+        <p id="pledge-modal-subtitle" class="text-xs text-slate-500">200 GSM Organic Linen (French Navy Dye) · Apex Textile Mills</p>
+      </div>
+
+      <!-- Locked Verified Entity Badge -->
+      <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+        <div class="space-y-0.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-bold block">
+            Authenticated Sourcing Entity
+          </span>
+          <span id="pledge-brand-badge" class="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Velvet &amp; Vine</span>
+          </span>
+        </div>
+        <span class="text-[11px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded font-bold border border-emerald-300">
+          Verified Buyer #VV-84920
+        </span>
+      </div>
+
+      <!-- Unit Input -->
+      <form onsubmit="handlePledgeSubmit(event)" class="space-y-4">
+        <div class="space-y-1.5">
+          <div class="flex justify-between items-center text-xs">
+            <label class="font-semibold text-slate-700">Units to Commit *</label>
+            <span id="pledge-cost-preview" class="font-mono font-bold text-emerald-600">Estimated Cost: $2,175.00</span>
+          </div>
+          <input id="pledge-units-input" type="number" min="25" max="300" value="150" oninput="updatePledgeCost(this.value)" class="w-full px-3.5 py-2.5 font-mono text-sm bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none" />
+          <p class="text-[11px] text-slate-500">Funds remain in escrow. Pledging 150 units updates consortium progress to 85%.</p>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-lg transition-all cursor-pointer">
+          Confirm Escrow Commitment (150 units)
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- VANILLA JAVASCRIPT: DUAL-ROLE AUTH, ROUTING ENGINE & ESCROW LOGIC -->
+  <!-- ======================================================================= -->
+  <script>
+    // Global State
+    let currentUser = null; // null | { role: 'brand', name: 'Velvet & Vine', id: '#VV-84920' } | { role: 'manufacturer', name: 'Apex Textile Mills', cert: 'ISO 9001' }
+    let currentCurrency = 'USD';
+    let currentRoleTab = 'brand';
+    let currentAuthMode = 'login';
+
+    // Sourcing Pool State
+    let pool402Committed = 700;
+    const pool402Target = 1000;
+    let pool402UnitPrice = 14.50;
+    let vvPledgedUnits = 200;
+
+    // Dynamic Mock Pool Dataset (Array of at least 8 distinct, realistic textile demand pools)
+    const mockPools = [
+      {
+        id: 'pool-402',
+        poolNumber: 402,
+        title: '200 GSM Organic Linen | French Navy Dye (#FN-289)',
+        fabricType: 'linen',
+        gsm: 200,
+        colorCode: '#FN-289',
+        supplier: 'Apex Textile Mills',
+        supplierLocation: 'Guimarães, Portugal',
+        certification: 'GOTS & OEKO-TEX Standard 100',
+        matchScore: '92% Match',
+        committedUnits: 700,
+        targetUnits: 1000,
+        unitPrice: 14.50,
+        daysRemaining: 4
+      },
+      {
+        id: 'pool-419',
+        poolNumber: 419,
+        title: '280 GSM TENCEL Organic French Terry | Ecru Natural (#EC-102)',
+        fabricType: 'synthetics',
+        gsm: 280,
+        colorCode: '#EC-102',
+        supplier: 'Lenzing Certified Mill',
+        supplierLocation: 'Izmir, Turkey',
+        certification: 'Lenzing™ Lyocell Certified & Bluesign®',
+        matchScore: '95% Match',
+        committedUnits: 950,
+        targetUnits: 1200,
+        unitPrice: 12.80,
+        daysRemaining: 6
+      },
+      {
+        id: 'pool-108',
+        poolNumber: 108,
+        title: '180 GSM Circular Recycled Cotton Jersey | Undyed Mélange (#RC-108)',
+        fabricType: 'cotton',
+        gsm: 180,
+        colorCode: '#RC-108',
+        supplier: 'Recover™ Fiber Mill',
+        supplierLocation: 'Alicante, Spain',
+        certification: 'GRS Certified & OEKO-TEX Standard 100',
+        matchScore: '89% Match',
+        committedUnits: 720,
+        targetUnits: 1000,
+        unitPrice: 8.90,
+        daysRemaining: 2
+      },
+      {
+        id: 'pool-314',
+        poolNumber: 314,
+        title: '310 GSM Raw Selvedge Denim | Indigo Dark (#DN-310)',
+        fabricType: 'denim',
+        gsm: 310,
+        colorCode: '#DN-310',
+        supplier: 'Kuroki Mills',
+        supplierLocation: 'Okayama, Japan',
+        certification: 'JAS Organic & Better Cotton Initiative',
+        matchScore: '94% Match',
+        committedUnits: 1100,
+        targetUnits: 1500,
+        unitPrice: 18.20,
+        daysRemaining: 5
+      },
+      {
+        id: 'pool-522',
+        poolNumber: 522,
+        title: '120 GSM Mulberry Habotai Silk | Ivory Cream (#SK-012)',
+        fabricType: 'silk',
+        gsm: 120,
+        colorCode: '#SK-012',
+        supplier: 'Hangzhou Silk Syndicate',
+        supplierLocation: 'Hangzhou, China',
+        certification: 'OEKO-TEX Class 1 & Organic Silk Standard',
+        matchScore: '88% Match',
+        committedUnits: 400,
+        targetUnits: 600,
+        unitPrice: 22.50,
+        daysRemaining: 8
+      },
+      {
+        id: 'pool-230',
+        poolNumber: 230,
+        title: '240 GSM Recycled Poly-Spandex Rib | Carbon Black (#BK-099)',
+        fabricType: 'synthetics',
+        gsm: 240,
+        colorCode: '#BK-099',
+        supplier: 'Taekwang Industrial',
+        supplierLocation: 'Seoul, South Korea',
+        certification: 'GRS & Bluesign Approved',
+        matchScore: '96% Match',
+        committedUnits: 850,
+        targetUnits: 1000,
+        unitPrice: 11.00,
+        daysRemaining: 3
+      },
+      {
+        id: 'pool-605',
+        poolNumber: 605,
+        title: '350 GSM Merino Wool Flannel | Forest Green (#MG-605)',
+        fabricType: 'wool',
+        gsm: 350,
+        colorCode: '#MG-605',
+        supplier: 'Vitale Barberis Canonico',
+        supplierLocation: 'Biella, Italy',
+        certification: 'ZQ Merino & Responsible Wool Standard (RWS)',
+        matchScore: '91% Match',
+        committedUnits: 480,
+        targetUnits: 800,
+        unitPrice: 29.00,
+        daysRemaining: 7
+      },
+      {
+        id: 'pool-711',
+        poolNumber: 711,
+        title: '220 GSM Bamboo Viscose Slub | Terracotta (#TC-711)',
+        fabricType: 'synthetics',
+        gsm: 220,
+        colorCode: '#TC-711',
+        supplier: 'Aditya Birla Yarn',
+        supplierLocation: 'Kharach, India',
+        certification: 'FSC Certified Bamboo & OEKO-TEX Standard 100',
+        matchScore: '90% Match',
+        committedUnits: 640,
+        targetUnits: 1000,
+        unitPrice: 10.50,
+        daysRemaining: 9
+      }
+    ];
+
+    let activeCommitPool = mockPools[0];
+
+    // Currency Multipliers
+    const rates = {
+      USD: { symbol: '$', rate: 1 },
+      EUR: { symbol: '€', rate: 0.92 },
+      GBP: { symbol: '£', rate: 0.79 },
+      INR: { symbol: '₹', rate: 83.5 }
+    };
+
+    function formatCur(usdAmount) {
+      const cfg = rates[currentCurrency] || rates.USD;
+      const val = usdAmount * cfg.rate;
+      if (currentCurrency === 'INR') {
+        return cfg.symbol + Math.round(val).toLocaleString('en-IN');
+      }
+      return cfg.symbol + val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Toast Notification helper
+    function showToast(msg) {
+      const c = document.getElementById('toast-container');
+      const div = document.createElement('div');
+      div.className = "bg-slate-900 text-white px-4 py-3 rounded-xl border border-emerald-500 shadow-2xl text-xs font-semibold flex items-center gap-2 transition-all transform duration-300";
+      div.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span>${msg}</span>`;
+      c.appendChild(div);
+      setTimeout(() => {
+        div.classList.add('opacity-0', 'translate-x-4');
+        setTimeout(() => div.remove(), 400);
+      }, 4000);
+    }
+
+    // View Switching / DOM Routing Engine
+    function switchView(viewName) {
+      const vPublic = document.getElementById('view-public');
+      const vBrand = document.getElementById('view-brand-dashboard');
+      const vFactory = document.getElementById('view-factory-console');
+      const navUnauth = document.getElementById('nav-unauth');
+      const navAuth = document.getElementById('nav-auth');
+      const badgeBrand = document.getElementById('nav-badge-brand');
+      const badgeFactory = document.getElementById('nav-badge-factory');
+
+      if (viewName === 'brand') {
+        vPublic.className = 'hidden';
+        vBrand.className = 'block flex-grow bg-slate-900 py-8 px-4 sm:px-6 lg:px-8';
+        vFactory.className = 'hidden';
+
+        navUnauth.className = 'hidden';
+        navAuth.className = 'flex items-center gap-2.5';
+        badgeBrand.className = 'flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-500/40 text-xs';
+        badgeFactory.className = 'hidden';
+      } else if (viewName === 'manufacturer') {
+        vPublic.className = 'hidden';
+        vBrand.className = 'hidden';
+        vFactory.className = 'block flex-grow bg-slate-900 py-8 px-4 sm:px-6 lg:px-8';
+
+        navUnauth.className = 'hidden';
+        navAuth.className = 'flex items-center gap-2.5';
+        badgeBrand.className = 'hidden';
+        badgeFactory.className = 'flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-950/70 border border-indigo-500/40 text-xs';
+      } else {
+        // Public view
+        vPublic.className = 'block flex-grow';
+        vBrand.className = 'hidden';
+        vFactory.className = 'hidden';
+
+        navUnauth.className = 'flex items-center gap-2';
+        navAuth.className = 'hidden';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Auth Modal Handlers
+    function openAuthModal(role = 'brand', mode = 'login', notice = null) {
+      currentRoleTab = role;
+      currentAuthMode = mode;
+      setRoleTab(role);
+      setAuthMode(mode);
+
+      const banner = document.getElementById('auth-intercept-banner');
+      const text = document.getElementById('auth-intercept-text');
+      if (notice) {
+        banner.classList.remove('hidden');
+        text.innerText = notice;
+      } else {
+        banner.classList.add('hidden');
+      }
+
+      const modal = document.getElementById('login-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeAuthModal() {
+      const modal = document.getElementById('login-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setRoleTab(role) {
+      currentRoleTab = role;
+      const bTab = document.getElementById('tab-role-brand');
+      const fTab = document.getElementById('tab-role-factory');
+      const nameLabel = document.getElementById('auth-name-label');
+      const nameInput = document.getElementById('auth-name-input');
+      const emailInput = document.getElementById('auth-email-input');
+      const submitBtn = document.getElementById('auth-submit-btn');
+
+      if (role === 'brand') {
+        bTab.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all bg-white text-emerald-700 shadow-sm border border-slate-200/80 cursor-pointer';
+        fTab.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-slate-800 cursor-pointer';
+        nameLabel.innerText = 'Apparel Brand / Company Name *';
+        nameInput.value = 'Velvet & Vine';
+        emailInput.value = 'elena@velvetandvine.com';
+        submitBtn.className = 'w-full py-3 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md transition-all cursor-pointer';
+        submitBtn.innerText = currentAuthMode === 'login' ? 'Sign In as Velvet & Vine (Brand)' : 'Create Verified Brand Account';
+      } else {
+        bTab.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-slate-800 cursor-pointer';
+        fTab.className = 'py-2 px-3 rounded-lg text-xs font-bold transition-all bg-white text-indigo-700 shadow-sm border border-slate-200/80 cursor-pointer';
+        nameLabel.innerText = 'Textile Mill / Factory Name *';
+        nameInput.value = 'Apex Textile Mills';
+        emailInput.value = 'sourcing@apextextiles.pt';
+        submitBtn.className = 'w-full py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-md transition-all cursor-pointer';
+        submitBtn.innerText = currentAuthMode === 'login' ? 'Sign In as Apex Textile Mills (Manufacturer)' : 'Register Mill Partner Account';
+      }
+    }
+
+    function setAuthMode(mode) {
+      currentAuthMode = mode;
+      const lTab = document.getElementById('tab-mode-login');
+      const rTab = document.getElementById('tab-mode-register');
+      const submitBtn = document.getElementById('auth-submit-btn');
+
+      if (mode === 'login') {
+        lTab.className = 'pb-2 border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer';
+        rTab.className = 'pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 cursor-pointer';
+        submitBtn.innerText = currentRoleTab === 'brand' ? 'Sign In as Velvet & Vine (Brand)' : 'Sign In as Apex Textile Mills (Manufacturer)';
+      } else {
+        lTab.className = 'pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-600 cursor-pointer';
+        rTab.className = 'pb-2 border-b-2 border-emerald-600 text-emerald-700 font-bold cursor-pointer';
+        submitBtn.innerText = currentRoleTab === 'brand' ? 'Create Verified Brand Account' : 'Register Mill Partner Account';
+      }
+    }
+
+    // Quick Fill demo buttons
+    function quickFillBrand() {
+      currentUser = { role: 'brand', name: 'Velvet & Vine', id: '#VV-84920' };
+      closeAuthModal();
+      switchView('brand');
+      showToast('Signed in: Welcome back, Velvet & Vine (Verified Buyer).');
+    }
+
+    function quickFillManufacturer() {
+      currentUser = { role: 'manufacturer', name: 'Apex Textile Mills', cert: 'ISO 9001' };
+      closeAuthModal();
+      switchView('manufacturer');
+      showToast('Signed in: Welcome, Apex Textile Mills (Mill Admin).');
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('auth-name-input');
+      const val = nameInput.value.trim();
+
+      if (currentRoleTab === 'brand') {
+        currentUser = { role: 'brand', name: val || 'Velvet & Vine', id: '#VV-84920' };
+        closeAuthModal();
+        switchView('brand');
+        showToast(`Signed in: Welcome back, ${currentUser.name} (Verified Buyer).`);
+      } else {
+        currentUser = { role: 'manufacturer', name: val || 'Apex Textile Mills', cert: 'ISO 9001' };
+        closeAuthModal();
+        switchView('manufacturer');
+        showToast(`Signed in: Welcome, ${currentUser.name} (Mill Admin).`);
+      }
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      switchView('public');
+      showToast('Signed out successfully. Public sourcing marketplace active.');
+    }
+
+    // Escrow Guard on Public view
+    function handlePublicPledgeClick() {
+      if (!currentUser) {
+        openAuthModal('brand', 'login', 'Please sign in as a Brand to commit units.');
+        showToast('Please sign in as a Brand to commit units.');
+        return;
+      }
+      if (currentUser.role !== 'brand') {
+        showToast('Please sign in as an Apparel Brand to commit escrow units.');
+        return;
+      }
+      openCommitModal();
+    }
+
+    // Pledge Modal
+    function openCommitModal(poolId) {
+      if (poolId) {
+        activeCommitPool = mockPools.find(p => p.id === poolId) || mockPools[0];
+      } else {
+        activeCommitPool = mockPools[0];
+      }
+
+      const modal = document.getElementById('pledge-modal');
+      const badge = document.getElementById('pledge-brand-badge');
+      const title = document.getElementById('pledge-modal-title');
+      const subtitle = document.getElementById('pledge-modal-subtitle');
+      
+      if (title) title.innerText = `Commit Units to Pool #${activeCommitPool.poolNumber}`;
+      if (subtitle) subtitle.innerText = `${activeCommitPool.title} · ${activeCommitPool.supplier}`;
+      
+      badge.innerHTML = `<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg><span>${currentUser?.name || 'Velvet & Vine'}</span>`;
+      
+      updatePledgeCost(document.getElementById('pledge-units-input').value);
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function joinPool(poolId) {
+      if (!currentUser) {
+        openAuthModal('brand', 'login', 'Please sign in as an Apparel Brand to join this pooling consortium.');
+        showToast('Please sign in as a Brand to commit units.');
+        return;
+      }
+      if (currentUser.role !== 'brand') {
+        showToast('Please switch to Brand account to join textile demand pools.');
+        return;
+      }
+      openCommitModal(poolId);
+    }
+
+    function closeCommitModal() {
+      const modal = document.getElementById('pledge-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function updatePledgeCost(units) {
+      const num = parseInt(units) || 0;
+      const preview = document.getElementById('pledge-cost-preview');
+      const price = activeCommitPool ? activeCommitPool.unitPrice : pool402UnitPrice;
+      preview.innerText = 'Estimated Cost: ' + formatCur(num * price);
+    }
+
+    function handlePledgeSubmit(e) {
+      e.preventDefault();
+      const unitsInput = document.getElementById('pledge-units-input');
+      const addedUnits = parseInt(unitsInput.value) || 150;
+
+      // Update pool state
+      if (activeCommitPool && activeCommitPool.id === 'pool-402') {
+        pool402Committed = Math.min(pool402Target, pool402Committed + addedUnits);
+        vvPledgedUnits += addedUnits;
+        activeCommitPool.committedUnits = pool402Committed;
+        const pct = Math.round((pool402Committed / pool402Target) * 100);
+        const remaining = Math.max(0, pool402Target - pool402Committed);
+
+        // Update Public Card
+        document.getElementById('pub-progress-text').innerText = `${pool402Committed} / 1,000 units (${pct}%)`;
+        document.getElementById('pub-progress-bar').style.width = pct + '%';
+        document.getElementById('pub-needed-units').innerText = remaining > 0 ? `${remaining} units needed to trigger loom batch` : '100% MOQ Reached (Loom Run Triggered)';
+
+        // Update Brand Dashboard
+        document.getElementById('brand-stat-match').innerText = remaining > 0 ? `Pool #402 (${pct}% Complete)` : `Pool #402 (100% MOQ Reached)`;
+        document.getElementById('brand-stat-match-sub').innerText = remaining > 0 ? `${remaining} units needed to trigger loom batch` : 'Apex Mill confirmed bulk run';
+        document.getElementById('brand-pool-units-text').innerText = `${pool402Committed} / 1,000 units (${pct}%)`;
+        document.getElementById('brand-pool-bar').style.width = pct + '%';
+        document.getElementById('brand-pledge-units').innerText = `${vvPledgedUnits} units`;
+        document.getElementById('brand-remaining-text').innerText = remaining > 0 ? `${remaining} units remaining to hit MOQ` : '0 units remaining (FULL)';
+        document.getElementById('brand-escrow-amount').innerText = formatCur(vvPledgedUnits * pool402UnitPrice);
+
+        // Update Factory Console
+        document.getElementById('factory-loom-status-text').innerText = remaining > 0 ? `Loom #04 Status: Pending ${remaining} units` : `Loom #04 Status: 100% Filled (Ready for Authorization)`;
+        document.getElementById('factory-pooled-subtext').innerText = `${pool402Committed} units pooled (${pct}%)`;
+      } else if (activeCommitPool) {
+        activeCommitPool.committedUnits = Math.min(activeCommitPool.targetUnits, activeCommitPool.committedUnits + addedUnits);
+      }
+
+      closeCommitModal();
+      renderPools();
+      const pName = activeCommitPool ? `Pool #${activeCommitPool.poolNumber}` : 'Pool #402';
+      showToast(`Escrow commitment confirmed: Velvet & Vine pledged ${addedUnits} units to ${pName}.`);
+    }
+
+    // Working Filter & Live Search Bar Engine for Portal
+    function handlePortalFilterChange() {
+      const searchInput = document.getElementById('search-input');
+      const gsmFilter = document.getElementById('gsm-filter');
+      const fabricFilter = document.getElementById('fabric-filter');
+      const sortFilter = document.getElementById('sort-filter');
+
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      const selectedGsm = gsmFilter ? gsmFilter.value : 'all';
+      const selectedFabric = fabricFilter ? fabricFilter.value : 'all';
+      const sortBy = sortFilter ? sortFilter.value : 'highest-fill';
+
+      const filtered = mockPools.filter(pool => {
+        // Search filter: fabric title, supplier, or colorway code
+        const matchesQuery = !query || 
+          pool.title.toLowerCase().includes(query) ||
+          pool.supplier.toLowerCase().includes(query) ||
+          pool.supplierLocation.toLowerCase().includes(query) ||
+          pool.colorCode.toLowerCase().includes(query);
+
+        // GSM filter
+        let matchesGsm = true;
+        if (selectedGsm === 'light') matchesGsm = pool.gsm < 150;
+        else if (selectedGsm === 'medium') matchesGsm = pool.gsm >= 150 && pool.gsm <= 250;
+        else if (selectedGsm === 'heavy') matchesGsm = pool.gsm > 250;
+
+        // Fabric type filter
+        let matchesFabric = true;
+        if (selectedFabric !== 'all') {
+          matchesFabric = pool.fabricType === selectedFabric;
+        }
+
+        return matchesQuery && matchesGsm && matchesFabric;
+      });
+
+      // Sorting
+      filtered.sort((a, b) => {
+        if (sortBy === 'highest-fill') {
+          return (b.committedUnits / b.targetUnits) - (a.committedUnits / a.targetUnits);
+        }
+        if (sortBy === 'closing-soonest') {
+          return a.daysRemaining - b.daysRemaining;
+        }
+        if (sortBy === 'lowest-price') {
+          return a.unitPrice - b.unitPrice;
+        }
+        return 0;
+      });
+
+      renderPools(filtered);
+    }
+
+    function resetPortalFilters() {
+      const s = document.getElementById('search-input');
+      const g = document.getElementById('gsm-filter');
+      const f = document.getElementById('fabric-filter');
+      const o = document.getElementById('sort-filter');
+      if (s) s.value = '';
+      if (g) g.value = 'all';
+      if (f) f.value = 'all';
+      if (o) o.value = 'highest-fill';
+      handlePortalFilterChange();
+    }
+
+    function renderPools(poolList) {
+      const container = document.getElementById('marketplace-pools-grid');
+      const countBadge = document.getElementById('portal-pools-count');
+      if (!container) return;
+
+      const list = poolList || mockPools;
+      if (countBadge) {
+        countBadge.innerText = `${list.length} Active ${list.length === 1 ? 'Pool' : 'Pools'} Available`;
+      }
+
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-slate-950 border border-slate-800 rounded-2xl p-12 text-center space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 text-slate-500 flex items-center justify-center mx-auto">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <div class="space-y-1">
+              <h4 class="text-base font-bold text-white">No active pooling consortiums found matching your criteria.</h4>
+              <p class="text-xs text-slate-400 max-w-md mx-auto">Try adjusting your search terms, changing the GSM weight filter, or resetting criteria to view available pools.</p>
+            </div>
+            <button onclick="resetPortalFilters()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition-all cursor-pointer inline-flex items-center gap-2">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              <span>Reset All Filters</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = list.map(pool => {
+        const pct = Math.round((pool.committedUnits / pool.targetUnits) * 100);
+        const remaining = Math.max(0, pool.targetUnits - pool.committedUnits);
+
+        return `
+          <div class="bg-slate-950 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 overflow-hidden flex flex-col justify-between group shadow-lg">
+            <div class="p-6 space-y-4">
+              <!-- Top Row: Pool #, Match Score, Colorway -->
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold bg-slate-900 text-emerald-400 px-2.5 py-1 rounded-md border border-slate-800">
+                    Pool #${pool.poolNumber}
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">
+                    <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    <span>${pool.matchScore}</span>
+                  </span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+                  ${pool.colorCode}
+                </span>
+              </div>
+
+              <!-- Title & Mill -->
+              <div>
+                <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition-colors line-clamp-2">
+                  ${pool.title}
+                </h4>
+                <p class="text-xs text-slate-400 flex items-center gap-1.5 mt-1.5">
+                  <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                  <span class="truncate">${pool.supplier} · ${pool.supplierLocation}</span>
+                </p>
+              </div>
+
+              <!-- Badges: GSM, Days Remaining, Cert -->
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-300 font-mono text-[11px]">
+                  ${pool.gsm} GSM
+                </span>
+                <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-amber-300 font-mono text-[11px] flex items-center gap-1">
+                  <svg class="w-3 h-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <span>${pool.daysRemaining} days left</span>
+                </span>
+                <span class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800 text-slate-400 text-[11px] truncate max-w-[140px]">
+                  ${pool.certification}
+                </span>
+              </div>
+
+              <!-- Real-Time Progress Bar -->
+              <div class="space-y-1.5 pt-2 border-t border-slate-900">
+                <div class="flex justify-between text-xs font-medium">
+                  <span class="text-slate-400">Demand Aggregation:</span>
+                  <span class="font-mono font-bold text-emerald-400">
+                    ${pool.committedUnits.toLocaleString()} / ${pool.targetUnits.toLocaleString()} (${pct}%)
+                  </span>
+                </div>
+                <div class="h-2.5 w-full bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+                  <div class="h-full bg-gradient-to-r from-emerald-500 to-indigo-500 rounded-full transition-all duration-500" style="width: ${Math.min(100, pct)}%"></div>
+                </div>
+                <div class="flex justify-between text-[11px] text-slate-500">
+                  <span>${remaining > 0 ? `${remaining.toLocaleString()} units to trigger run` : 'MOQ Reached'}</span>
+                  <span class="font-mono text-slate-400">${pool.supplierLocation.split(',')[1] || 'Audited Mill'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pricing & Action Button -->
+            <div class="p-4 bg-slate-900/80 border-t border-slate-800/80 flex items-center justify-between gap-3">
+              <div>
+                <span class="text-[10px] text-slate-400 uppercase font-mono block">Wholesale Rate</span>
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-lg font-bold font-mono text-white">
+                    ${formatCur(pool.unitPrice)}
+                  </span>
+                  <span class="text-xs text-slate-400">/yd</span>
+                </div>
+              </div>
+
+              <button onclick="joinPool('${pool.id}')" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-950/40 transition-all cursor-pointer flex items-center gap-1.5">
+                <span>Join Pool</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function authorizeMillRun() {
+      const btn = document.getElementById('factory-authorize-btn');
+      btn.innerHTML = `<svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>Mill Run Authorized ✓</span>`;
+      btn.className = "w-full py-2.5 px-4 rounded-xl font-bold text-xs bg-emerald-950 text-emerald-300 border border-emerald-600 cursor-not-allowed";
+      btn.disabled = true;
+      showToast("Apex Loom #04 production run authorized! 1,000 units queued for rapier weaving at Guimarães facility.");
+    }
+
+    // Currency Switcher
+    function changeCurrency(newCurrency) {
+      currentCurrency = newCurrency;
+      
+      // Update displays
+      document.getElementById('pub-price-rate').innerText = formatCur(14.50) + ' / yd';
+      document.getElementById('pub-standalone-rate').innerText = formatCur(35.00) + ' / yd';
+      document.getElementById('brand-stat-savings').innerText = formatCur(12000);
+      document.getElementById('brand-escrow-amount').innerText = formatCur(vvPledgedUnits * pool402UnitPrice);
+      document.getElementById('factory-escrow-locked').innerText = formatCur(10150);
+      document.getElementById('factory-stat-escrow').innerText = formatCur(45000);
+
+      // Re-render directory cards to reflect new currency symbol and converted prices
+      renderPools();
+
+      showToast(`Currency updated to ${newCurrency} (${rates[newCurrency].symbol}).`);
+    }
+
+    // Initialize default view and render pools directory
+    switchView('public');
+    renderPools();
+  </script>
+</body>
+</html>

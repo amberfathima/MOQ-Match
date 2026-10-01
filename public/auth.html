@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOQ Match — Brand Onboarding & Login Portal</title>
+  <meta name="description" content="Sign in or register your apparel label with MOQ Match. Pool demand, lower MOQs, and eliminate dead stock.">
+  <!-- Tailwind CSS CDN for Standalone HTML Compatibility -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased selection:bg-emerald-500 selection:text-white">
+
+  <div class="min-h-screen flex flex-col lg:flex-row">
+    
+    <!-- ===================================================================== -->
+    <!-- LEFT SIDE: Branding, Testimonial Quote, Security Highlights -->
+    <!-- ===================================================================== -->
+    <div class="lg:w-1/2 relative bg-slate-950 p-8 sm:p-12 lg:p-16 flex flex-col justify-between overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-800">
+      
+      <!-- Ambient Lighting -->
+      <div aria-hidden="true" class="absolute inset-0 pointer-events-none opacity-40">
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/30 rounded-full blur-[130px]"></div>
+        <div class="absolute top-1/2 -right-32 w-96 h-96 bg-emerald-500/20 rounded-full blur-[130px]"></div>
+      </div>
+
+      <!-- Top Branding Section -->
+      <div class="relative z-10 space-y-6">
+        <div class="flex items-center justify-between">
+          <a href="/" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors py-1.5 px-3 rounded-lg bg-slate-900 border border-slate-800">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span>Back to Landing Page</span>
+          </a>
+
+          <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2.5 py-1 rounded-full">
+            B2B Sourcing Portal
+          </span>
+        </div>
+
+        <div class="pt-4">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+            <div>
+              <span class="font-display font-bold text-2xl tracking-tight text-white flex items-center gap-1.5">
+                MOQ Match
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+              </span>
+              <span class="text-xs font-medium tracking-wider text-slate-400 uppercase block">
+                B2B Group Sourcing Platform
+              </span>
+            </div>
+          </div>
+          <p class="text-sm text-slate-400 mt-4 max-w-md leading-relaxed">
+            Consolidate raw material purchase orders with vetted boutique brands. Hit Tier-1 mill minimums, access volume pricing, and eliminate dead stock.
+          </p>
+        </div>
+      </div>
+
+      <!-- Middle: Real Testimonial Quote -->
+      <div class="relative z-10 my-10 lg:my-0">
+        <div class="p-6 sm:p-7 rounded-2xl bg-slate-900/90 border border-slate-800 backdrop-blur-md shadow-2xl relative">
+          <svg class="w-8 h-8 text-emerald-400/50 mb-3" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <blockquote class="text-base sm:text-lg font-medium text-slate-200 leading-snug">
+            "MOQ Match helped Velvet & Vine reduce inventory capital risk by 80%."
+          </blockquote>
+          <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+            We pooled demand on Pool #402 for 200 GSM French Navy Linen. Instead of being forced to purchase 1,000 meters or take jobber markups, we got direct mill rates through Portuguese rapier looms.
+          </p>
+
+          <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                VV
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-white">Elena Vance</h4>
+                <p class="text-[11px] text-slate-400">Founder & Creative Director, Velvet & Vine</p>
+              </div>
+            </div>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">
+              Verified Buyer
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom: Platform Security Highlights -->
+      <div class="relative z-10 space-y-4 pt-6 border-t border-slate-800/80">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+          Platform Security & Buyer Protection
+        </span>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <div>
+              <strong class="text-slate-200 block">Verified Business Badges</strong>
+              <span class="text-slate-400 text-[11px]">Strict KYB & credit screening on all brands.</span>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80">
+            <svg class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            <div>
+              <strong class="text-slate-200 block">Escrow Payment Protection</strong>
+              <span class="text-slate-400 text-[11px]">Funds released only upon lab-dip sign-off.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+          <span>© 2026 MOQ Match Inc.</span>
+          <span>Regulated B2B Trade Escrow</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- RIGHT SIDE: Interactive Form Container with Tabbed Navigation -->
+    <!-- ===================================================================== -->
+    <div class="lg:w-1/2 bg-slate-900 p-6 sm:p-10 lg:p-14 flex flex-col justify-center relative overflow-y-auto">
+      
+      <div class="max-w-md w-full mx-auto space-y-6">
+        
+        <div>
+          <h2 id="form-heading" class="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+            Register your apparel brand
+          </h2>
+          <p id="form-subheading" class="text-xs sm:text-sm text-slate-400 mt-1">
+            Join 400+ vetted boutique labels pooling demand with Tier-1 certified mills.
+          </p>
+        </div>
+
+        <!-- Tabbed Navigation -->
+        <div class="grid grid-cols-3 p-1 bg-slate-950 rounded-xl border border-slate-800 text-xs font-semibold">
+          <button type="button" id="tab-login" onclick="switchTab('login')" class="py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-white truncate">
+            Brand Sign In
+          </button>
+          <button type="button" id="tab-register" onclick="switchTab('register')" class="py-2.5 px-3 rounded-lg transition-all bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-950/40 truncate">
+            Register Brand
+          </button>
+          <button type="button" id="tab-manufacturer" onclick="switchTab('manufacturer')" class="py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-white truncate">
+            Manufacturer Portal
+          </button>
+        </div>
+
+        <!-- Dynamic Success / Redirect Banner -->
+        <div id="status-banner" class="hidden p-4 rounded-xl bg-emerald-950/90 border border-emerald-500 text-emerald-300 text-xs flex items-center gap-3">
+          <svg class="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span id="status-message">Success! Redirecting to dashboard.html...</span>
+        </div>
+
+        <!-- 1. LOGIN FORM -->
+        <form id="login-form" class="hidden space-y-4" onsubmit="handleLoginSubmit(event)" novalidate>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Work Email <span class="text-red-400">*</span></label>
+            <input type="email" id="login-email" value="elena@velvetandvine.com" placeholder="founder@yourbrand.com" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <p id="err-login-email" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-semibold text-slate-300">Password <span class="text-red-400">*</span></label>
+              <a href="#" class="text-xs text-emerald-400 hover:text-emerald-300">Forgot Password?</a>
+            </div>
+            <div class="relative">
+              <input type="password" id="login-password" value="secretpass123" placeholder="Enter your account password" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 pr-10">
+              <button type="button" onclick="togglePasswordVisibility('login-password')" class="absolute right-3 top-2.5 text-slate-400 hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+            <p id="err-login-password" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer">
+              <input type="checkbox" id="login-remember" checked class="accent-emerald-500 rounded bg-slate-950 border-slate-700">
+              <span>Remember this device for 30 days</span>
+            </label>
+          </div>
+
+          <button type="submit" id="btn-login-submit" class="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center gap-2 cursor-pointer">
+            <span>Sign In to Dashboard</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+
+          <div class="pt-2 text-center text-xs text-slate-400">
+            Don't have a verified brand account?
+            <button type="button" onclick="switchTab('register')" class="text-emerald-400 font-semibold hover:underline">Register your brand</button>
+          </div>
+        </form>
+
+        <!-- 2. BRAND REGISTRATION FORM -->
+        <form id="register-form" class="space-y-4" onsubmit="handleRegisterSubmit(event)" novalidate>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Business Name (e.g., "Velvet & Vine") <span class="text-red-400">*</span></label>
+            <input type="text" id="reg-name" placeholder="Your fashion label or apparel entity" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <p id="err-reg-name" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Business Type</label>
+            <select id="reg-business-type" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Boutique Apparel">Boutique Apparel</option>
+              <option value="Eco-Activewear">Eco-Activewear</option>
+              <option value="Kids Clothing">Kids Clothing</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Textile Mill / Manufacturer">Textile Mill / Manufacturer</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-300 block">Work Email <span class="text-red-400">*</span></label>
+              <input type="email" id="reg-email" placeholder="founder@brand.com" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <p id="err-reg-email" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-300 block">Password <span class="text-red-400">*</span></label>
+              <input type="password" id="reg-password" placeholder="Min 8 characters" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <p id="err-reg-password" class="hidden text-xs text-red-400 mt-1"></p>
+            </div>
+          </div>
+
+          <!-- Primary Fabric / Material Requirement (Dropdown with 10 Categories) -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-semibold text-slate-300 block">Primary Fabric / Material Requirement</label>
+              <span class="text-[10px] font-mono text-emerald-400">10 Verified Categories</span>
+            </div>
+            <select id="reg-category" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Organic Linen & Cotton">Organic Linen & Cotton (42% avg group savings)</option>
+              <option value="Activewear Synthetics">Activewear Synthetics (38% avg group savings)</option>
+              <option value="Denim & Heavy Canvas">Denim & Heavy Canvas (45% avg group savings)</option>
+              <option value="Sustainable Knits">Sustainable Knits (36% avg group savings)</option>
+              <option value="Swimwear Blends">Swimwear Blends (34% avg group savings)</option>
+              <option value="Leather & Vegan Leather">Leather & Vegan Leather (48% avg group savings)</option>
+              <option value="Footwear & Soles">Footwear & Soles (51% avg group savings)</option>
+              <option value="Trims & Zippers">Trims & Zippers (39% avg group savings)</option>
+              <option value="Packaging Materials">Packaging Materials (44% avg group savings)</option>
+              <option value="Hardware & Fasteners">Hardware & Fasteners (40% avg group savings)</option>
+            </select>
+          </div>
+
+          <!-- Average Annual Production Volume (Units) -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Average Annual Production Volume (Units)</label>
+            <select id="reg-volume" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Under 1,000 units">Under 1,000 units (Emerging Capsule)</option>
+              <option value="1,000 - 5,000 units" selected>1,000 - 5,000 units</option>
+              <option value="5,000 - 20,000 units">5,000 - 20,000 units</option>
+              <option value="20,000 - 50,000 units">20,000 - 50,000 units</option>
+              <option value="50,000+ units">50,000+ units (Scaling Enterprise)</option>
+            </select>
+          </div>
+
+          <!-- Checkbox: Agree to Escrow Terms & Verified Business Terms -->
+          <div class="pt-1">
+            <label class="flex items-start gap-2.5 text-xs text-slate-300 cursor-pointer">
+              <input type="checkbox" id="reg-agree" class="accent-emerald-500 rounded bg-slate-950 border-slate-700 mt-0.5 shrink-0">
+              <span>I agree to the <span class="text-emerald-400 underline">Escrow Terms</span> & <span class="text-emerald-400 underline">Verified Business Terms</span>. Group pool commitments are only funded upon lab dip and pre-shipment sign-off.</span>
+            </label>
+            <p id="err-reg-agree" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <button type="submit" id="btn-reg-submit" class="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center gap-2 cursor-pointer">
+            <span>Create Account & Start Pooling</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+
+          <div class="pt-1 text-center text-xs text-slate-400">
+            Already registered?
+            <button type="button" onclick="switchTab('login')" class="text-emerald-400 font-semibold hover:underline">Sign in here</button>
+          </div>
+        </form>
+
+        <!-- 3. MANUFACTURER PORTAL -->
+        <form id="manufacturer-form" class="hidden space-y-4" onsubmit="handleManufacturerSubmit(event)" novalidate>
+          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+            <span>Textile Mills & Trim Factories: We consolidate buyer orders into guaranteed, escrow-backed bulk production runs.</span>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Facility / Mill Name <span class="text-red-400">*</span></label>
+            <input type="text" id="mill-name" placeholder="e.g. Apex Textile Mills S.A." class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <p id="err-mill-name" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-300 block">Country / Hub</label>
+              <select id="mill-country" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white">
+                <option value="Portugal">Portugal (Guimarães / Porto)</option>
+                <option value="Italy">Italy (Biella / Como)</option>
+                <option value="Japan">Japan (Kojima / Okayama)</option>
+                <option value="Turkey">Turkey (Izmir / Bursa)</option>
+                <option value="USA">United States (Carolinas)</option>
+              </select>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-300 block">Monthly Capacity</label>
+              <input type="text" id="mill-capacity" value="50,000 meters/month" class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white">
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Audited Certifications</label>
+            <input type="text" id="mill-certs" value="GOTS, OEKO-TEX Standard 100, Bluesign" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white">
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-300 block">Work Email <span class="text-red-400">*</span></label>
+            <input type="email" id="mill-email" placeholder="sales@apextextiles.pt" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white">
+            <p id="err-mill-email" class="hidden text-xs text-red-400 mt-1"></p>
+          </div>
+
+          <button type="submit" id="btn-mill-submit" class="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-xl transition-all shadow-lg shadow-emerald-950/60 flex items-center justify-center gap-2 cursor-pointer">
+            <span>Submit Mill Onboarding Application</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    function switchTab(tab) {
+      const tabs = ['login', 'register', 'manufacturer'];
+      tabs.forEach(t => {
+        document.getElementById(`tab-${t}`).className = 'py-2.5 px-3 rounded-lg transition-all text-slate-400 hover:text-white truncate';
+        document.getElementById(`${t}-form`).classList.add('hidden');
+      });
+
+      document.getElementById(`tab-${tab}`).className = 'py-2.5 px-3 rounded-lg transition-all bg-emerald-500 text-slate-950 font-bold shadow-md shadow-emerald-950/40 truncate';
+      document.getElementById(`${tab}-form`).classList.remove('hidden');
+
+      const headings = {
+        login: ['Sign in to your brand portal', 'Access your active group pool pledges, escrow status, and split-ship orders.'],
+        register: ['Register your apparel brand', 'Join 400+ vetted boutique labels pooling demand with Tier-1 certified mills.'],
+        manufacturer: ['Manufacturer & Mill onboarding', 'Partner with vetted buyer syndicates. Fill off-peak loom capacity with 100% pre-funded POs.']
+      };
+
+      document.getElementById('form-heading').innerText = headings[tab][0];
+      document.getElementById('form-subheading').innerText = headings[tab][1];
+      hideAllErrors();
+    }
+
+    function togglePasswordVisibility(id) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function showError(elementId, msg) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.innerText = msg;
+        el.classList.remove('hidden');
+      }
+    }
+
+    function hideAllErrors() {
+      const errorElements = document.querySelectorAll('[id^="err-"]');
+      errorElements.forEach(el => el.classList.add('hidden'));
+    }
+
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      hideAllErrors();
+      let hasError = false;
+
+      const email = document.getElementById('login-email').value.trim();
+      const pass = document.getElementById('login-password').value;
+
+      if (!email) {
+        showError('err-login-email', 'Work email is required.');
+        hasError = true;
+      } else if (!isValidEmail(email)) {
+        showError('err-login-email', 'Please provide a valid work email.');
+        hasError = true;
+      }
+
+      if (!pass) {
+        showError('err-login-password', 'Password is required.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const btn = document.getElementById('btn-login-submit');
+      btn.innerHTML = '<span>Verifying credentials...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        showStatusBanner('Authentication verified. Redirecting to dashboard.html...');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1200);
+      }, 800);
+    }
+
+    function handleRegisterSubmit(event) {
+      event.preventDefault();
+      hideAllErrors();
+      let hasError = false;
+
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const pass = document.getElementById('reg-password').value;
+      const agree = document.getElementById('reg-agree').checked;
+
+      if (!name) {
+        showError('err-reg-name', 'Business name is required.');
+        hasError = true;
+      }
+
+      if (!email) {
+        showError('err-reg-email', 'Work email is required.');
+        hasError = true;
+      } else if (!isValidEmail(email)) {
+        showError('err-reg-email', 'Please enter a valid work email format.');
+        hasError = true;
+      }
+
+      if (!pass) {
+        showError('err-reg-password', 'Password is required.');
+        hasError = true;
+      } else if (pass.length < 8) {
+        showError('err-reg-password', 'Password must be at least 8 characters.');
+        hasError = true;
+      }
+
+      if (!agree) {
+        showError('err-reg-agree', 'You must agree to Escrow Terms & Verified Business Terms.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const btn = document.getElementById('btn-reg-submit');
+      btn.innerHTML = '<span>Creating Brand Account...</span>';
+      btn.disabled = true;
+
+      // Store brand name for dashboard display
+      localStorage.setItem('moq_user_brand', name);
+      localStorage.setItem('moq_user_email', email);
+
+      setTimeout(() => {
+        showStatusBanner(`Account successfully created for ${name}! Redirecting to dashboard.html...`);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1200);
+      }, 900);
+    }
+
+    function handleManufacturerSubmit(event) {
+      event.preventDefault();
+      hideAllErrors();
+      let hasError = false;
+
+      const mill = document.getElementById('mill-name').value.trim();
+      const email = document.getElementById('mill-email').value.trim();
+
+      if (!mill) {
+        showError('err-mill-name', 'Facility / Mill name is required.');
+        hasError = true;
+      }
+      if (!email || !isValidEmail(email)) {
+        showError('err-mill-email', 'Valid business email is required.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      const btn = document.getElementById('btn-mill-submit');
+      btn.innerHTML = '<span>Submitting Mill Application...</span>';
+      btn.disabled = true;
+
+      localStorage.setItem('moq_user_brand', mill);
+      localStorage.setItem('moq_user_email', email);
+
+      setTimeout(() => {
+        showStatusBanner(`Application submitted for ${mill}! Redirecting to dashboard.html...`);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1200);
+      }, 900);
+    }
+
+    function showStatusBanner(msg) {
+      const banner = document.getElementById('status-banner');
+      document.getElementById('status-message').innerText = msg;
+      banner.classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

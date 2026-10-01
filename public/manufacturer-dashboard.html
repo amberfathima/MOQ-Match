@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOQ Match — Apex Textile Mills Factory Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- TOP HEADER -->
+  <!-- ===================================================================== -->
+  <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex items-center gap-4">
+          <a href="/" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors py-1 px-2.5 rounded-md hover:bg-slate-900">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            <span class="hidden sm:inline">Landing Page</span>
+          </a>
+
+          <div class="h-5 w-px bg-slate-800"></div>
+
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center text-white font-bold text-xs shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display font-bold text-sm tracking-tight text-white flex items-center gap-1">
+                Apex Textile Mills
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              </span>
+              <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">
+                Guimarães Facility · ISO 9001 & GOTS Certified
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="dashboard.html" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition-colors">
+            Switch to Buyer Portal (Velvet & Vine)
+          </a>
+
+          <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span class="font-semibold text-white">Apex Mill Partner</span>
+            <span class="text-slate-500">·</span>
+            <span class="font-mono text-emerald-400 text-[11px]">Direct Loom Access</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN CONSOLE -->
+  <!-- ===================================================================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+    
+    <!-- Hero / Factory Downtime Monetization Banner -->
+    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-emerald-950/40 rounded-2xl border border-slate-800 p-6 sm:p-7 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-xl">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-950/90 text-emerald-400 text-xs font-semibold border border-emerald-800">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Factory Downtime Monetization Engine
+          </span>
+          <span class="text-xs text-slate-400 font-mono">Loom Facility #PT-402</span>
+        </div>
+        <h1 class="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+          Manufacturer & Factory Management Console
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+          Fill off-peak machine schedules with 100% pre-funded, escrow-guaranteed pooled purchase orders from vetted boutique labels.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="#off-peak-section" class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-xl shadow-lg shadow-emerald-950/50 transition-all flex items-center gap-1.5">
+          <span>+ Post New Idle Loom Window</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- 1. FACTORY OVERVIEW PANEL -->
+    <!-- ===================================================================== -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Metric 1: Machine Capacity Utilization (82%) -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Machine Capacity Utilization</span>
+        <div id="utilization-stat" class="text-3xl font-bold font-mono text-emerald-400">82%</div>
+        <p class="text-[11px] text-slate-400">Target: 85% · 18 of 22 rapier looms active</p>
+      </div>
+
+      <!-- Metric 2: Open Aggregate POs (4) -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Open Aggregate POs</span>
+        <div id="open-pos-stat" class="text-3xl font-bold font-mono text-white">4</div>
+        <p class="text-[11px] text-slate-400">Pools #402, #408, #419, and #425 ready</p>
+      </div>
+
+      <!-- Metric 3: Guaranteed Escrow Funds Held ($45,000) -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Guaranteed Escrow Funds Held</span>
+        <div class="text-3xl font-bold font-mono text-emerald-400">$45,000</div>
+        <p class="text-[11px] text-slate-400">100% pre-funded in FDIC escrow trust</p>
+      </div>
+
+      <!-- Metric 4: Downtime Hours Saved (120 hrs) -->
+      <div class="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-1">
+        <span class="text-xs font-medium text-slate-400 block">Downtime Hours Saved</span>
+        <div id="downtime-stat" class="text-3xl font-bold font-mono text-amber-300">120 hrs</div>
+        <p class="text-[11px] text-slate-400">Equivalent to $18,400 idle overhead recovered</p>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 2. PENDING POOLED ORDERS TABLE -->
+    <!-- ===================================================================== -->
+    <section class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-xl space-y-4 p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-800 gap-2">
+        <div>
+          <h2 class="font-display font-bold text-xl text-white">Pending Pooled Purchase Orders</h2>
+          <p class="text-xs text-slate-400">
+            Buyer demand pools that reached 100% MOQ and funded escrow. Ready for loom queue approval.
+          </p>
+        </div>
+        <span id="po-count-badge" class="text-xs font-mono text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded border border-emerald-800">
+          4 POs Requiring Action
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-900/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
+            <tr>
+              <th class="py-3 px-4">Pool ID</th>
+              <th class="py-3 px-4">Material Spec</th>
+              <th class="py-3 px-4">Total Pooled Quantity</th>
+              <th class="py-3 px-4">Contributing Brands</th>
+              <th class="py-3 px-4">Escrow Status</th>
+              <th class="py-3 px-4">Target Delivery Date</th>
+              <th class="py-3 px-4 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/80 text-slate-300">
+            
+            <!-- Row 1: Pool #402 Example Specified in Brief -->
+            <tr id="row-po-402" class="hover:bg-slate-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">Pool #402</td>
+              <td class="py-4 px-4">
+                <strong class="text-white block font-semibold">200 GSM Organic Linen</strong>
+                <span class="text-[11px] text-slate-400">French Navy Dye (#FN-289) · Loom #04</span>
+              </td>
+              <td class="py-4 px-4 font-mono font-bold text-white whitespace-nowrap">1,000 / 1,000 Units</td>
+              <td class="py-4 px-4 text-slate-300 text-[11px] max-w-xs">
+                Velvet & Vine (200), Aura Athleisure (300), Urban Loom (500)
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 font-semibold border border-emerald-800 text-[11px]">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  Escrow 100% Funded
+                </span>
+                <span class="block text-[10px] font-mono text-slate-400 mt-0.5">$14,500.00 secured</span>
+              </td>
+              <td class="py-4 px-4 font-mono text-slate-300 whitespace-nowrap">Oct 15, 2026</td>
+              <td class="py-4 px-4 text-right whitespace-nowrap">
+                <button id="btn-accept-402" onclick="acceptPurchaseOrder('402', 'Loom #04 (Dornier Rapier)')" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs shadow-md transition-all cursor-pointer">
+                  Accept Purchase Order
+                </button>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr class="hover:bg-slate-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">Pool #408</td>
+              <td class="py-4 px-4">
+                <strong class="text-white block font-semibold">14oz Raw Selvedge Denim</strong>
+                <span class="text-[11px] text-slate-400">Pure Indigo Dye · Vintage Shuttle Looms</span>
+              </td>
+              <td class="py-4 px-4 font-mono font-bold text-white whitespace-nowrap">1,500 / 1,500 Units</td>
+              <td class="py-4 px-4 text-slate-300 text-[11px] max-w-xs">
+                Forge & Thread (500), Riveted Co. (450), Indigo Nomad (550)
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 font-semibold border border-emerald-800 text-[11px]">
+                  Escrow 100% Funded
+                </span>
+                <span class="block text-[10px] font-mono text-slate-400 mt-0.5">$29,700.00 secured</span>
+              </td>
+              <td class="py-4 px-4 font-mono text-slate-300 whitespace-nowrap">Nov 02, 2026</td>
+              <td class="py-4 px-4 text-right whitespace-nowrap">
+                <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-950 text-indigo-300 font-bold border border-indigo-800 text-xs">
+                  Weaving Active
+                </span>
+              </td>
+            </tr>
+
+            <!-- Row 3 -->
+            <tr id="row-po-419" class="hover:bg-slate-900/50 transition-colors">
+              <td class="py-4 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">Pool #419</td>
+              <td class="py-4 px-4">
+                <strong class="text-white block font-semibold">280 GSM TENCEL French Terry</strong>
+                <span class="text-[11px] text-slate-400">Ecru Natural Tint · Mayer Knitters</span>
+              </td>
+              <td class="py-4 px-4 font-mono font-bold text-white whitespace-nowrap">1,200 / 1,200 Units</td>
+              <td class="py-4 px-4 text-slate-300 text-[11px] max-w-xs">
+                Haven Loungewear (450), Maison Minimal (500), Velvet & Vine (250)
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 font-semibold border border-emerald-800 text-[11px]">
+                  Escrow 100% Funded
+                </span>
+                <span class="block text-[10px] font-mono text-slate-400 mt-0.5">$15,360.00 secured</span>
+              </td>
+              <td class="py-4 px-4 font-mono text-slate-300 whitespace-nowrap">Nov 18, 2026</td>
+              <td class="py-4 px-4 text-right whitespace-nowrap">
+                <button id="btn-accept-419" onclick="acceptPurchaseOrder('419', 'Loom #07 (Circular Knit)')" class="px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg text-xs shadow-md transition-all cursor-pointer">
+                  Accept Purchase Order
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2-Column Grid: Off-Peak Form & Analytics -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ===================================================================== -->
+      <!-- 3. "LIST OFF-PEAK CAPACITY" FORM -->
+      <!-- ===================================================================== -->
+      <section id="off-peak-section" class="lg:col-span-7 bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-7 space-y-6 shadow-xl">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 text-indigo-400 text-xs font-semibold mb-2 border border-indigo-800">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>Monetize Idle Loom Capacity</span>
+          </div>
+          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">List Off-Peak Production Slot</h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Post upcoming idle production windows at a discounted MOQ to attract syndicated brand demand before loom changeovers.
+          </p>
+        </div>
+
+        <form id="off-peak-form" onsubmit="handlePublishSlot(event)" class="space-y-4 text-xs">
+          <!-- Select Machinery / Loom Type -->
+          <div class="space-y-1.5">
+            <label class="font-semibold text-slate-300 block">Select Machinery / Loom Type *</label>
+            <select id="form-loom" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Dornier High-Speed Rapier Looms">Dornier High-Speed Rapier Looms (Fine Linen & Twills)</option>
+              <option value="Picanol OmniPlus-i Airjet Looms">Picanol OmniPlus-i Airjet Looms (Shirting & Voile)</option>
+              <option value="Vintage Draper Shuttle Looms">Vintage Draper Shuttle Looms (Red-line Selvedge Denim)</option>
+              <option value="Mayer & Cie Electronic Jacquard Knitters">Mayer & Cie Electronic Jacquard Knitters (Jersey & Fleece)</option>
+            </select>
+          </div>
+
+          <!-- Available Material / Raw Input Specifications -->
+          <div class="space-y-1.5">
+            <label class="font-semibold text-slate-300 block">Available Material / Raw Input Specifications *</label>
+            <input type="text" id="form-spec" required value="100% GOTS Certified French Flax / Linen" placeholder="e.g. 100% GOTS Certified French Flax / Linen" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <span class="text-[11px] text-slate-500">Pre-stocked yarn count or raw fiber ready at Guimarães mill warehouse.</span>
+          </div>
+
+          <!-- Discounted Minimum MOQ Threshold (e.g., 800 units instead of 1,200) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="font-semibold text-slate-300 block">Discounted Minimum MOQ Threshold *</label>
+              <input type="text" id="form-moq" required value="800 units (instead of 1,200)" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <span class="text-[11px] text-slate-500">Lower entry barrier to accelerate consortium formation.</span>
+            </div>
+            <div class="space-y-1.5">
+              <label class="font-semibold text-slate-300 block">Discount Rate Applied</label>
+              <input type="text" disabled value="15% Off-Peak Factory Incentive" class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-emerald-400 font-mono">
+              <span class="text-[11px] text-slate-500">Subsidized by machine idle cost elimination.</span>
+            </div>
+          </div>
+
+          <!-- Available Production Dates -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="font-semibold text-slate-300 block">Production Window Start</label>
+              <input type="date" id="form-start-date" required value="2026-10-20" class="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
+            </div>
+            <div class="space-y-1.5">
+              <label class="font-semibold text-slate-300 block">Production Window End</label>
+              <input type="date" id="form-end-date" required value="2026-11-05" class="w-full px-3.5 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
+            </div>
+          </div>
+
+          <!-- CTA Button: "Publish Off-Peak Production Slot" -->
+          <button type="submit" class="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl shadow-lg shadow-emerald-950/60 transition-all flex items-center justify-center gap-2 cursor-pointer pt-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>Publish Off-Peak Production Slot</span>
+          </button>
+        </form>
+
+        <!-- Active Off-Peak Slots Feed -->
+        <div class="pt-4 border-t border-slate-800 space-y-3">
+          <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+            Active Off-Peak Slots Open on Marketplace
+          </span>
+          <div id="slots-container" class="space-y-2">
+            <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1">
+              <div class="flex justify-between items-start">
+                <span class="font-bold text-white">Picanol OmniPlus-i Airjet Looms</span>
+                <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">18% Off-Peak Rebate</span>
+              </div>
+              <p class="text-slate-300 text-[11px]">120 GSM Organic Cotton Batiste / Poplin</p>
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono pt-1">
+                <span>MOQ: 750 units (Standard: 1,500)</span>
+                <span>Window: Oct 24 - Nov 06</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- 4. MATERIAL YIELD & WASTE REDUCTION ANALYTICS WIDGET -->
+      <!-- ===================================================================== -->
+      <section class="lg:col-span-5 bg-slate-950 rounded-2xl border border-slate-800 p-6 sm:p-7 space-y-6 shadow-xl">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 text-xs font-semibold mb-2 border border-emerald-800">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Zero-Waste Production Intelligence</span>
+          </div>
+          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">
+            Material Yield & Waste Reduction Analytics
+          </h2>
+          <p class="text-xs text-slate-400 mt-1">
+            Visual summary showing recycled scrap utilization and material standardization metrics.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Recycled Scrap Utilization -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-300 font-medium">Recycled Scrap Utilization</span>
+              <span class="font-mono font-bold text-emerald-400">91.4% Standardized</span>
+            </div>
+            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+              <div class="h-full bg-emerald-500 rounded-full" style="width: 91.4%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              8.6% selvedge trimmings recovered & converted into composite insulation felt.
+            </p>
+          </div>
+
+          <!-- Material Standardization -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-300 font-medium">Single-Dye Batch Consistency</span>
+              <span class="font-mono font-bold text-indigo-400">99.2% Color Match</span>
+            </div>
+            <div class="h-3 w-full bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+              <div class="h-full bg-indigo-500 rounded-full" style="width: 99.2%;"></div>
+            </div>
+            <p class="text-[11px] text-slate-400">
+              By dyeing 1,000 meters in a single continuous jet vessel, water consumption drops by 44%.
+            </p>
+          </div>
+
+          <!-- Sustainability Stats -->
+          <div class="p-4 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-xs space-y-2">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold uppercase tracking-wider text-[11px]">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span>Consortium Sustainability Metrics</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-center pt-1">
+              <div class="p-2 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 font-mono">Downtime Power Saved</span>
+                <p class="text-lg font-bold font-mono text-emerald-400">-34% kWh</p>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-950 border border-slate-800">
+                <span class="text-[10px] text-slate-500 font-mono">Dead Fabric Eliminated</span>
+                <p class="text-lg font-bold font-mono text-white">0 kg Waste</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mill Certification Badge -->
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+            <span class="flex items-center gap-1.5 text-slate-300">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              OEKO-TEX STeP Certified
+            </span>
+            <span class="font-mono text-slate-500">Audit #EU-PT-940</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Vanilla JavaScript Logic -->
+  <script>
+    let capacity = 82;
+    let downtime = 120;
+    let openPos = 4;
+
+    function acceptPurchaseOrder(poolId, loomAssigned) {
+      const btn = document.getElementById(`btn-accept-${poolId}`);
+      if (btn) {
+        btn.outerHTML = `
+          <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-950 text-emerald-400 font-bold border border-emerald-800 text-xs">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            PO Accepted
+          </span>
+        `;
+      }
+
+      capacity = Math.min(96, capacity + 4);
+      downtime += 36;
+      openPos = Math.max(0, openPos - 1);
+
+      document.getElementById('utilization-stat').innerText = `${capacity}%`;
+      document.getElementById('downtime-stat').innerText = `${downtime} hrs`;
+      document.getElementById('open-pos-stat').innerText = `${openPos}`;
+      document.getElementById('po-count-badge').innerText = `${openPos} POs Requiring Action`;
+
+      alert(`Purchase Order Pool #${poolId} accepted! Apex ${loomAssigned} allocated for bulk weaving. Escrow milestone 1 authorized.`);
+    }
+
+    function handlePublishSlot(e) {
+      e.preventDefault();
+      const loom = document.getElementById('form-loom').value;
+      const spec = document.getElementById('form-spec').value;
+      const moq = document.getElementById('form-moq').value;
+      const start = document.getElementById('form-start-date').value;
+      const end = document.getElementById('form-end-date').value;
+
+      const newSlotDiv = document.createElement('div');
+      newSlotDiv.className = 'p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1 animate-in fade-in duration-200';
+      newSlotDiv.innerHTML = `
+        <div class="flex justify-between items-start">
+          <span class="font-bold text-white">${loom}</span>
+          <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">15% Downtime Incentive</span>
+        </div>
+        <p class="text-slate-300 text-[11px]">${spec}</p>
+        <div class="flex justify-between text-[10px] text-slate-500 font-mono pt-1">
+          <span>MOQ: ${moq} (Discounted)</span>
+          <span>Window: ${start} to ${end}</span>
+        </div>
+      `;
+
+      document.getElementById('slots-container').prepend(newSlotDiv);
+      alert(`Off-Peak Slot published! 400+ brands notified of discount MOQ window (${start} to ${end}).`);
+    }
+  </script>
+</body>
+</html>

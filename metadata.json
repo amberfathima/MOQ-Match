@@ -1,0 +1,6 @@
+{
+  "name": "MOQ Match - B2B Demand Aggregation Platform",
+  "description": "Pool demand, lower MOQs, and cut inventory risk. Combine order volumes with vetted small apparel brands to hit manufacturer minimums without over-purchasing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
